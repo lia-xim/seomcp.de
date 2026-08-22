@@ -38,6 +38,13 @@ Aktuelle Primärquellen:
   normalisiert wird. Fehler-Canonical, OG-URL und QA verwenden nun `https://seomcp.de/404`.
 - P2, behoben: Der sichtbare Security-Meldeweg führte ausschließlich über eine GitHub-Anmeldung.
   E-Mail, privater Advisory-Kanal und `/.well-known/security.txt` sind nun direkt auffindbar.
+- P2, behoben: Die vier fehlenden Service-Beweisbereiche waren nur über Startseite und Auditdatei
+  verteilt. Eigene Prelaunch-Vertragsseiten trennen jetzt Endpoint, Capabilities, Auth/Tenancy und
+  Betriebsstatus; jede zeigt sichtbar `NOT PROVEN` und bleibt dauerhaft außerhalb der Sitemap.
+- P2, behoben: Die Browser-QA übersah nach Interaktionsflows verspätete HTTP-Assetfehler. Sie erfasst
+  jetzt Response-Status separat und isoliert ausschließlich das erwartete Dokument-404-Signal.
+- P2, behoben: Ein langer technischer Begriff erzeugte auf 390 px Overflow in `/authorization`.
+  Vertragsseiten besitzen jetzt robuste Wortumbrüche; der erneute Test ist overflow-frei.
 - P3, bewusst offen: keine Search-Console-, Analytics- oder Conversion-Baseline. Sie ist vor einer
   Indexfreigabe nicht der Engpass; der fehlende reale Dienst ist der Engpass.
 
@@ -47,7 +54,8 @@ Aktuelle Primärquellen:
 | --- | --- | --- |
 | Verified | DomainPortfolio und Eigentümerentscheidung führen `seomcp.de` als neue Registrierung und Contextter-Förderdomain. | Keine Legacy-/Archivgates; normale Drittrechte bleiben. |
 | Verified | Weder Repo noch Live-Site liefern MCP-Endpoint, Auth, Tenancy, Scopes, Kostenvertrag, Audit oder externen Status. | Service- und Verfügbarkeitsclaims sowie Indexfreigabe bleiben blockiert. |
-| Verified | Apex, Security, Impressum und Datenschutz liefern serverseitiges HTML mit eigenem Title, Description, H1, Canonical und OG-URL. | Öffentliche Transparenzfläche bleibt nutzbar und JS-unabhängig. |
+| Verified | Apex, vier Prelaunch-Verträge, Security, Impressum und Datenschutz liefern serverseitiges HTML mit eigenem Title, Description, H1, Canonical und OG-URL. | Öffentliche Transparenzfläche bleibt nutzbar und JS-unabhängig. |
+| Verified | `/service-contract`, `/capabilities`, `/authorization` und `/status` deklarieren die fehlende Service-Evidenz als `NOT PROVEN`; kein Endpoint, Auth-Flow, Capability-Inventar, Uptime oder SLA wird behauptet. | Prüfverträge dürfen öffentlich noindex bleiben; sie sind kein Ersatz für Laufzeitevidenz. |
 | Verified | Meta- und X-Robots-Tag stehen auf `noindex, follow, noarchive`; `robots.txt` erlaubt Crawling; Sitemap-Routen liefern 404. | Korrektes crawlbares Prelaunch-noindex. |
 | Verified | Apex/www, HTTP/HTTPS und Slashvarianten enden über 308 auf extensionless HTTPS-Apex-URLs und erhalten Pfad/Query. | Host- und URL-Konsolidierung ist technisch konsistent. |
 | Verified | `/404` und unbekannte Pfade liefern 404; die Slashvariante normalisiert per 308; es gibt keine klassifizierten 410-URLs. | Keine pauschalen Homepage-Redirects und kein widersprüchliches Fehler-Canonical. |
@@ -65,6 +73,10 @@ Fehlerpfade werden nie in die Sitemap aufgenommen.
 | URL | Status | Primärer Nutzerjob | Rolle | Index/Sitemap | Nächster Schritt |
 | --- | ---: | --- | --- | --- | --- |
 | `/` | 200 | realen Projektstatus, Zuständigkeit und Freigabegates verstehen | Prelaunch-Hub | noindex / nein | erst mit realem Dienst zur Service-Landingpage aufwerten |
+| `/service-contract` | 200 | fehlende Endpoint- und Protokollnachweise exakt prüfen | Prelaunch-Vertrag | noindex / nie | durch echte Discovery-/Endpoint-Fläche erst nach Laufzeitbeleg ersetzen |
+| `/capabilities` | 200 | Pflichtfelder und Tests künftiger Capabilities prüfen | Prelaunch-Vertrag | noindex / nie | Capability-Inventar nur aus deployter Laufzeit erzeugen |
+| `/authorization` | 200 | Auth-, Tenant-, Scope-, Kosten- und Ablehnungsgates prüfen | Prelaunch-Vertrag | noindex / nie | produktive Metadaten erst nach End-to-End-Nachweis veröffentlichen |
+| `/status` | 200 | aktuellen Launch-Beweisstand ohne Uptime-Behauptung prüfen | Prelaunch-Status | noindex / nie | operativen Status erst mit externem Monitor und Incident-Prozess veröffentlichen |
 | `/security` | 200 | aktuellen Scope und privaten Meldeweg finden | Security-Utility | noindex / nie | bei Infrastrukturänderung aktualisieren |
 | `/impressum` | 200 | Betreiber und direkten Kontakt prüfen | Legal-Utility | noindex / nie | Betreiberangaben aktuell halten |
 | `/datenschutz` | 200 | reale Hosting- und Datenflüsse prüfen | Privacy-Utility | noindex / nie | bei Auth, Logs, Formularen, Analytics oder Storage aktualisieren |
@@ -76,6 +88,10 @@ Fehlerpfade werden nie in die Sitemap aufgenommen.
 | URL | Überlappung / Evidenzlücke | Aktion | Benötigter Beleg und Linkpfad | KPI / Review |
 | --- | --- | --- | --- | --- |
 | `/` | ohne Dienst kein eigener Suchjob; redaktionelle Nähe zu `seo-mcp.de` | Keep + strengthen + noindex | echter Endpoint, Betriebsvertrag; Links kuratiert zu Security, Legal und redaktioneller Erklärung | Launch-Gates; vor jedem Service-Release |
+| `/service-contract` | kein Endpoint, keine Protokollidentität, kein externer Laufzeittest | Create + noindex | vier explizite Belege aus `service-evidence.ts`; Hub und Nachbarverträge | Evidence-Diff; bei jedem Backend-Release |
+| `/capabilities` | kein deploytes Capability-Schema | Create + noindex | Schema-/Nebenwirkungs-/Limit-/Negativtestvertrag | Registry-vs-Runtime-Diff; bei jeder Capability-Änderung |
+| `/authorization` | kein öffentlicher Auth-Flow oder Tenancy-Nachweis | Create + noindex | Identitäts-, Tenant-, Scope-, Widerruf-, Kosten- und Ablehnungsbelege | End-to-End-Negativtests; vor jeder Auth-Änderung |
+| `/status` | kein externer Monitor, Incident-Prozess oder Owner | Create + noindex | Launch-Gates aus zentraler Policy plus fehlende Operations-Evidenz | Gate-Status; bei jedem Nachweiswechsel |
 | `/security` | kein benannter Security-Owner, aber realer Meldeweg vorhanden | Strengthen + noindex | E-Mail, Advisory und `security.txt`; später Owner/SLA nur nach Annahme | Kontakte erreichbar; monatlich und bei Incident-Änderung |
 | `/impressum` | keine Intent-Kannibalisierung | Keep + noindex | verifizierte Betreiberangaben; Footer/Home-Verbindung | 200, aktuelle Daten; quartalsweise |
 | `/datenschutz` | Datenflüsse ändern sich beim späteren Service stark | Keep + noindex | Hosting/Auth/Logs/Storage/Provider gegen reale Implementierung | Inhaltsgleichheit mit Infrastruktur; vor jedem Providerwechsel |
@@ -88,6 +104,10 @@ Fehlerpfade werden nie in die Sitemap aufgenommen.
 
 ```text
 /  Prelaunch-Hub
+├─ /service-contract  Endpoint- und Protokollbeweis
+├─ /capabilities  Schema-, Nebenwirkungs- und Laufzeittestvertrag
+├─ /authorization  Identitäts-, Tenant-, Scope- und Kostenvertrag
+├─ /status  Prelaunch-Gates, ausdrücklich kein Uptime-Monitor
 ├─ /security  Sicherheitsumfang und Meldeweg
 │  ├─ /.well-known/security.txt  maschinenlesbare Discovery
 │  ├─ mailto:info@matthiasramahi.de  direkter Bericht
@@ -98,9 +118,11 @@ Fehlerpfade werden nie in die Sitemap aufgenommen.
 └─ Contextter  Produktkontext, keine unabhängige Bestätigung
 ```
 
-Künftige, derzeit **nicht angelegte** Kinder: Endpoint-/Discovery-Metadaten, Verbindung/Auth,
-Kompatibilitätsmatrix und extern geprüfter Status/Incidents. Jede URL benötigt eigenen Live-Beleg,
-Maintenance-Owner und klaren nächsten Schritt. Vergleich, Methode und Guides bleiben auf `seo-mcp.de`.
+Die vier zusätzlichen Kinder sind Prüfverträge, keine funktionalen Serviceflächen. Weiterhin nicht
+angelegt sind reale Endpoint-/Discovery-Metadaten, ein Verbindung/Auth-Flow, ein Laufzeit-Capability-
+Inventar sowie extern geprüfter Uptime-/Incident-Status. Jede spätere funktionale URL benötigt eigenen
+Live-Beleg, Maintenance-Owner und klaren nächsten Schritt. Vergleiche, Methoden und Guides bleiben auf
+`seo-mcp.de`.
 
 ## Such- und Nutzerlücken
 
@@ -115,13 +137,15 @@ Blockiert statt künstlich publiziert:
 
 - Verbindungsanleitung: kein Endpoint und kein unterstützter Client verifiziert;
 - Kompatibilitätsseite: keine getestete Server-/Client-Matrix;
-- Statusseite: kein externer Check, Incident-Prozess oder benannter Owner;
+- operativer Uptime-/Incident-Status: kein externer Check, Incident-Prozess oder benannter Owner;
 - Kosten-/Scope-Dokumentation: keine produktiven Verträge;
 - Vergleiche/Guides/Tools: falsche Domainrolle und keine eigenständige Evidenz.
 
 ## Zentraler SEO- und Sitemap-Vertrag
 
 - `src/data/seo.ts` besitzt Titles, Descriptions, Canonicals, Rollen, Sitemapfähigkeit und Launch-Gates.
+- `src/data/service-evidence.ts` besitzt die sichtbaren `NOT PROVEN`-Nachweise für Endpoint,
+  Capabilities, Autorisierung und Betrieb; Vertragsseiten dürfen keine abweichenden Positivclaims führen.
 - `@astrojs/sitemap` entdeckt gebaute Astro-Routen automatisch und filtert sie durch diese Registry.
 - Nur `sitemap: "launch"` kann nach belegtem Gate-Pass aufgenommen werden.
 - `robots.txt` erlaubt Crawling und nennt die Sitemap erst nach Launch.
@@ -145,7 +169,8 @@ Blockiert statt künstlich publiziert:
 
 ### 0–30 Tage
 
-- Prelaunch-noindex, leere Sitemap und monatlichen Live-Contract beibehalten.
+- Prelaunch-noindex, fehlende Sitemap und monatlichen Live-Contract beibehalten.
+- Die vier sichtbaren Prüfverträge bei jedem Evidence-Wechsel gemeinsam mit der zentralen Policy aktualisieren.
 - Service-, Security- und Incident-Owner benennen.
 - Endpoint-, Tenancy-, Scope-, Kosten-, Audit-, Datenschutz- und Fehlerverträge schreiben.
 
@@ -173,4 +198,4 @@ Blockiert statt künstlich publiziert:
 7. Deployment, Commit und stärksten bewiesenen Status im DomainPortfolio erfassen; GSC-Ergebnisse erst nach Authentifizierung behaupten.
 
 Ein einzelnes Meta-Tag ist kein Launch. Solange der reale Dienst und sein Betriebsvertrag fehlen,
-bleiben Indexierung, Sitemap und neue Service-Unterseiten gesperrt.
+bleiben Indexierung, Sitemap und alle funktionalen Service-, Auth-, Capability- und Betriebsclaims gesperrt.

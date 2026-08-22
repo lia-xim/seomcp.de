@@ -46,6 +46,17 @@ The official `@astrojs/sitemap` integration discovers built routes and includes 
 indexable canonicals. The current service gates are not met, so the preview remains crawlable and noindex.
 See `SEO_LAUNCH.md` for the evidence register and atomic release procedure.
 
+The public prelaunch contract routes are deliberately useful for technical review without pretending
+that a service exists:
+
+- `/service-contract` — endpoint and protocol evidence required before publication
+- `/capabilities` — runtime schema, side-effect, limit and test contract
+- `/authorization` — identity, tenant, scope, approval and cost contract
+- `/status` — launch-evidence status, explicitly not an uptime monitor or SLA
+
+All four routes remain `noindex, follow, noarchive`, are permanently excluded from the generated
+sitemap, and expose every current service state as `NOT PROVEN`.
+
 Vercel normalizes non-root trailing-slash variants to the extensionless canonical path with a permanent
 redirect. The shared response-header contract adds CSP, `nosniff`, referrer, permissions and framing
 policies on every route; the build fails if `vercel.json` drifts from that contract.

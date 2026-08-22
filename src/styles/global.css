@@ -477,6 +477,17 @@ svg {
   border-bottom: 1px solid var(--line);
 }
 
+a.service-row {
+  color: inherit;
+  text-decoration: none;
+  transition: background-color 220ms ease;
+}
+
+a.service-row:hover,
+a.service-row:focus-visible {
+  background: rgba(37, 89, 214, 0.055);
+}
+
 .service-row > strong {
   color: var(--blue);
   font-size: clamp(1.45rem, 2.4vw, 2.25rem);
@@ -594,6 +605,10 @@ svg {
 
 .gates-section {
   padding: clamp(6rem, 10vw, 9rem) var(--page-gutter) 0;
+}
+
+.gates-link {
+  margin: 1.5rem 0 clamp(4rem, 7vw, 6rem);
 }
 
 .gates-section > header {
@@ -804,6 +819,107 @@ svg {
 
 .content-back:hover svg {
   transform: translateX(-4px);
+}
+
+.contract-shell {
+  overflow-wrap: anywhere;
+}
+
+.contract-hero {
+  align-items: start;
+}
+
+.contract-hero .eyebrow {
+  margin-bottom: 1.25rem;
+}
+
+.contract-state {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.45fr) minmax(0, 1fr);
+  gap: 2rem;
+  align-items: center;
+  margin-bottom: 3rem;
+  padding: 1.5rem 1.75rem;
+  border: 1px solid var(--blue);
+  background: var(--blue-soft);
+}
+
+.contract-state strong,
+.status-ledger strong {
+  color: var(--blue);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+}
+
+.contract-state p {
+  color: var(--ink);
+  line-height: 1.6;
+}
+
+.contract-next {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  margin-top: 3.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--line);
+}
+
+.contract-next a {
+  color: var(--blue);
+  font-weight: 700;
+}
+
+.status-ledger {
+  border-top: 1px solid var(--line-strong);
+}
+
+.status-ledger li {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 2rem;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.status-ledger > li > span {
+  color: var(--blue);
+  font-weight: 750;
+}
+
+.status-ledger p {
+  margin-top: 0.65rem;
+  color: var(--ink);
+  line-height: 1.6;
+}
+
+.status-ledger small {
+  display: block;
+  margin-top: 0.55rem;
+  color: var(--faint);
+}
+
+.status-evidence {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.7fr) minmax(0, 1.3fr);
+  gap: 3rem;
+  margin-top: 4rem;
+  padding: 3rem;
+  background: var(--ink);
+  color: var(--white);
+}
+
+.status-evidence h2 {
+  font-size: clamp(1.6rem, 3vw, 2.5rem);
+}
+
+.status-evidence ul {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.status-evidence li {
+  line-height: 1.55;
 }
 
 .not-found-page {
@@ -1073,6 +1189,15 @@ svg {
   .content-block {
     grid-template-columns: 1fr;
     gap: 0.9rem;
+  }
+
+  .contract-state,
+  .status-evidence {
+    grid-template-columns: 1fr;
+  }
+
+  .status-evidence {
+    padding: 2rem 1.5rem;
   }
 }
 

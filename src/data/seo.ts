@@ -58,6 +58,38 @@ export const seoRoutes = {
     role: "security_utility",
     sitemap: "never",
   },
+  serviceContract: {
+    path: "/service-contract",
+    title: "Prelaunch-Vertrag für Endpoint und Protokoll",
+    description:
+      "Prüfvertrag für einen künftigen Contextter-MCP-Endpunkt. Derzeit ist kein öffentlicher Endpoint oder Protokollnachweis freigegeben.",
+    role: "prelaunch_contract",
+    sitemap: "never",
+  },
+  capabilities: {
+    path: "/capabilities",
+    title: "Prelaunch-Vertrag für MCP-Capabilities",
+    description:
+      "Benötigte Schemas, Grenzen und Laufzeittests für künftige MCP-Capabilities. Aktuell ist keine Capability veröffentlicht.",
+    role: "prelaunch_contract",
+    sitemap: "never",
+  },
+  authorization: {
+    path: "/authorization",
+    title: "Prelaunch-Vertrag für Auth und Mandanten",
+    description:
+      "Benötigte Nachweise für Authentifizierung, Scopes, Mandantentrennung, Freigaben und Kosten. Aktuell existiert kein öffentlicher Auth-Flow.",
+    role: "prelaunch_contract",
+    sitemap: "never",
+  },
+  status: {
+    path: "/status",
+    title: "Prelaunch-Status des Contextter-MCP-Vorhabens",
+    description:
+      "Aktueller Beweisstand der Launch-Gates. Diese Seite ist kein Uptime-Monitor und behauptet keine Serviceverfügbarkeit.",
+    role: "prelaunch_status",
+    sitemap: "never",
+  },
   imprint: {
     path: "/impressum",
     title: "Impressum und Betreiberangaben",

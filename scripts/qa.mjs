@@ -24,6 +24,10 @@ const exists = async (path) => { try { await access(path); return true; } catch 
 const pageFiles = {
   home: "index.html",
   security: join("security", "index.html"),
+  serviceContract: join("service-contract", "index.html"),
+  capabilities: join("capabilities", "index.html"),
+  authorization: join("authorization", "index.html"),
+  status: join("status", "index.html"),
   imprint: join("impressum", "index.html"),
   privacy: join("datenschutz", "index.html"),
   notFound: "404.html",
@@ -60,6 +64,10 @@ for (const [key, html] of Object.entries(pages)) {
 
 const index = pages.home;
 const security = pages.security;
+const serviceContract = pages.serviceContract;
+const capabilities = pages.capabilities;
+const authorization = pages.authorization;
+const status = pages.status;
 const imprint = pages.imprint;
 const privacy = pages.privacy;
 const notFound = pages.notFound;
@@ -71,6 +79,13 @@ check(security.includes("privaten Security-Advisory-Kanal"), "security: private 
 check(security.includes('href="mailto:info@matthiasramahi.de"'), "security: direct email reporting path required");
 check(security.includes('href="/.well-known/security.txt"'), "security: visible security.txt discovery link required");
 check(notFound.includes("Unbekannte URLs werden nicht pauschal"), "404: no blanket redirect rule required");
+for (const [key, page] of Object.entries({ serviceContract, capabilities, authorization, status })) {
+  check(page.includes("NOT PROVEN"), `${key}: unverified state must be visible`);
+}
+check(serviceContract.includes("keinen freigegebenen öffentlichen Contextter-MCP-Endpunkt"), "service contract: endpoint boundary required");
+check(capabilities.includes("keine veröffentlichte Liste"), "capabilities: absence must be explicit");
+check(authorization.includes("kein öffentlicher Auth-Flow"), "authorization: absence must be explicit");
+check(status.includes("kein Uptime-Monitor") && status.includes("keine SLA"), "status: operational-claim boundary required");
 for (const fact of ["Matthias Ramahi", "Kempener Straße 44", "40699 Erkrath", "info@matthiasramahi.de", "+49 176 42 44 98 58"]) check(imprint.includes(fact), `imprint: missing ${fact}`);
 for (const fact of ["Vercel Inc.", "440 N Barranca Avenue #4133", "keine Anmeldung", "keine Analyse-", "keine Cookies", "keine externen Webfonts", "Local Storage", "Session Storage"]) check(privacy.includes(fact), `privacy: missing ${fact}`);
 
@@ -99,7 +114,7 @@ check(contentSecurityPolicy.includes("script-src 'none'"), "static prelaunch CSP
 const simulatedLaunchHeaders = expectedSeoHeaders(true);
 const simulatedLaunchGlobal = simulatedLaunchHeaders.find((entry) => entry.source === "/(.*)")?.headers ?? [];
 check(!simulatedLaunchGlobal.some((header) => header.key === "X-Robots-Tag"), "launch simulation must remove global X-Robots-Tag");
-for (const path of ["/security", "/impressum", "/datenschutz", "/.well-known/(.*)"]) {
+for (const path of [...Object.values(seoRoutes).filter((route) => route.sitemap === "never" && route.role !== "error").map((route) => route.path), "/.well-known/(.*)"]) {
   check(
     simulatedLaunchHeaders.some(
       (entry) => entry.source === path && entry.headers.some((header) => header.key === "X-Robots-Tag" && header.value === NOINDEX_DIRECTIVE),
@@ -119,7 +134,7 @@ for (const url of sitemapUrls) {
   check(url.startsWith(SITE_ORIGIN), `sitemap URL must use canonical origin: ${url}`);
   check(!/[?#]/.test(url), `sitemap URL must not contain query or fragment: ${url}`);
 }
-check(!sitemapUrls.some((url) => /(?:security|impressum|datenschutz|404)/.test(url)), "utility, legal and error routes must stay outside sitemap");
+check(!sitemapUrls.some((url) => /(?:security|service-contract|capabilities|authorization|status|impressum|datenschutz|404)/.test(url)), "utility, contract, legal and error routes must stay outside sitemap");
 
 const simulatedPolicy = {
   ...launchPolicy,
@@ -151,7 +166,9 @@ for (const [key, html] of Object.entries(pages)) {
   }
 }
 
-for (const claim of ["99.9% Uptime", "Endpoint ist live", "Jetzt mit MCP verbinden", "Alle Systeme funktionieren", "Sofort authentifizieren"]) check(!index.includes(claim), `forbidden unverified claim: ${claim}`);
+for (const claim of ["99.9% Uptime", "Endpoint ist live", "Jetzt mit MCP verbinden", "Alle Systeme funktionieren", "Sofort authentifizieren", "Service ist verfügbar", "Alle Capabilities sind aktiv"]) {
+  for (const [key, html] of Object.entries(pages)) check(!html.includes(claim), `${key}: forbidden unverified claim: ${claim}`);
+}
 
 if (failures.length) { console.error(failures.join("\n")); process.exit(1); }
 console.log(`QA passed for ${domain}: central SEO registry, metadata, conditional sitemap, crawlable noindex, launch simulation, legal/security discovery, links and claims`);

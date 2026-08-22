@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import { evidenceState, missingServiceEvidence } from "../data/service-evidence";
+---
+
+<BaseLayout routeKey="authorization">
+  <div class="page-frame">
+    <SiteHeader />
+    <main id="main-content" class="content-page">
+      <div class="content-shell contract-shell">
+        <header class="content-hero contract-hero">
+          <div><p class="eyebrow">Auth-Vertrag · {evidenceState}</p><h1>Kein Login ist noch kein Sicherheitsmodell.</h1></div>
+          <p>Aktuell existiert kein öffentlicher Auth-Flow auf seomcp.de. Diese Seite definiert die Nachweise, die vor einer Verbindung von Identität, Mandant, Daten und kostenrelevanten Aktionen erforderlich sind.</p>
+        </header>
+        <div class="contract-state" role="status"><strong>{evidenceState}</strong><p>Issuer, Resource Server, Client-Flow, Scopes, Token-Lebenszyklus und Mandantenbindung sind nicht produktiv belegt.</p></div>
+        <div class="content-blocks">
+          <section class="content-block"><span>01</span><h2>Vor Freigabe</h2><ul>{missingServiceEvidence.authorization.map((item) => <li>{item}</li>)}</ul></section>
+          <section class="content-block"><span>02</span><h2>Ablehnung gehört zum Test</h2><p>Fehlende, falsche oder tenantfremde Identitäten müssen reproduzierbar scheitern. Widerrufene Tokens, zu breite Scopes und nicht freigegebene kostenpflichtige oder verändernde Aktionen brauchen eigene Negativtests.</p></section>
+          <section class="content-block"><span>03</span><h2>Security-Grenze</h2><p>Secrets, Tokens, Workspace-IDs und private Logs gehören nicht auf diese öffentliche Fläche. Der aktuelle Meldeweg und statische Umfang stehen unter <a href="/security">Sicherheit</a>.</p></section>
+        </div>
+        <nav class="contract-next" aria-label="Weitere technische Verträge"><a href="/service-contract">Service-Vertrag</a><a href="/capabilities">Capability-Vertrag</a><a href="/status">Launch-Status</a></nav>
+      </div>
+    </main>
+    <SiteFooter />
+  </div>
+</BaseLayout>

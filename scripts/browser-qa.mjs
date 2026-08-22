@@ -10,6 +10,10 @@ const live = base === "https://seomcp.de";
 const routes = [
   { path: "/", canonical: "https://seomcp.de/", status: 200 },
   { path: "/security", canonical: "https://seomcp.de/security", status: 200 },
+  { path: "/service-contract", canonical: "https://seomcp.de/service-contract", status: 200 },
+  { path: "/capabilities", canonical: "https://seomcp.de/capabilities", status: 200 },
+  { path: "/authorization", canonical: "https://seomcp.de/authorization", status: 200 },
+  { path: "/status", canonical: "https://seomcp.de/status", status: 200 },
   { path: "/impressum", canonical: "https://seomcp.de/impressum", status: 200 },
   { path: "/datenschutz", canonical: "https://seomcp.de/datenschutz", status: 200 },
   { path: "/404", canonical: "https://seomcp.de/404", status: live ? 404 : 200 },
@@ -26,6 +30,13 @@ for (const viewport of [{ width: 1440, height: 1000 }, { width: 390, height: 844
   const consoleErrors = [];
   const consoleWarnings = [];
   const requestFailures = [];
+  const httpFailures = [];
+  page.on("response", (response) => {
+    if (response.status() < 400) return;
+    const url = new URL(response.url());
+    const expectedDocument404 = response.request().resourceType() === "document" && url.pathname === "/404";
+    if (!expectedDocument404) httpFailures.push(`${response.status()} ${response.url()}`);
+  });
   page.on("console", (message) => {
     if (message.type() === "error") consoleErrors.push(message.text());
     if (message.type() === "warning") consoleWarnings.push(message.text());
@@ -71,7 +82,7 @@ for (const viewport of [{ width: 1440, height: 1000 }, { width: 390, height: 844
     if (route === "/404" && result.status === expectedStatus) {
       const unexpectedRouteErrors = consoleErrors
         .slice(routeConsoleStart)
-        .filter((message) => !/^Failed to load resource: the server responded with a status of 404(?: \(\))?$/.test(message));
+        .filter((message) => !/^Failed to load resource: the server responded with a status of 404(?: \((?:Not Found)?\))?$/.test(message));
       consoleErrors.splice(routeConsoleStart, consoleErrors.length - routeConsoleStart, ...unexpectedRouteErrors);
     }
   }
@@ -92,8 +103,19 @@ for (const viewport of [{ width: 1440, height: 1000 }, { width: 390, height: 844
   await page.getByRole("link", { name: "Impressum" }).last().click();
   await page.waitForURL(/\/impressum$/);
   check(page.url().endsWith("/impressum"), `${viewport.width}px: legal navigation failed`);
-  check(consoleErrors.length === 0, `${viewport.width}px: console ${consoleErrors.join(" | ")}`);
+  await page.goto(`${base}/`, { waitUntil: "networkidle" });
+  await page.getByRole("link", { name: "Service-Zugang" }).click();
+  await page.waitForURL(/\/service-contract$/);
+  check((await page.locator("main").innerText()).includes("NOT PROVEN"), `${viewport.width}px: contract discovery failed`);
+  await page.getByRole("link", { name: "Launch-Status" }).last().click();
+  await page.waitForURL(/\/status$/);
+  check((await page.locator("main").innerText()).includes("kein Uptime-Monitor"), `${viewport.width}px: status boundary failed`);
+  const unexpectedConsoleErrors = consoleErrors.filter(
+    (message) => !/^Failed to load resource: the server responded with a status of 404(?: \((?:Not Found)?\))?$/.test(message),
+  );
+  check(unexpectedConsoleErrors.length === 0, `${viewport.width}px: console ${unexpectedConsoleErrors.join(" | ")}`);
   check(requestFailures.length === 0, `${viewport.width}px: requests ${requestFailures.join(" | ")}`);
+  check(httpFailures.length === 0, `${viewport.width}px: HTTP resources ${httpFailures.join(" | ")}`);
   await page.goto(`${base}/security`, { waitUntil: "networkidle" });
   await page.getByRole("link", { name: "/.well-known/security.txt" }).click();
   await page.waitForURL(/\/\.well-known\/security\.txt$/);
@@ -101,7 +123,16 @@ for (const viewport of [{ width: 1440, height: 1000 }, { width: 390, height: 844
   await page.goto(`${base}/`, { waitUntil: "networkidle" });
   const screenshot = `${output}/seomcp-hardening-${live ? "live" : "local"}-${viewport.width}.png`;
   await page.screenshot({ path: screenshot, fullPage: true });
-  evidence.viewports[viewport.width] = { routes: routeResults, focus, consoleErrors, consoleWarnings, requestFailures, screenshot };
+  evidence.viewports[viewport.width] = {
+    routes: routeResults,
+    focus,
+    consoleErrors: unexpectedConsoleErrors,
+    expected404ConsoleSignals: consoleErrors.length - unexpectedConsoleErrors.length,
+    consoleWarnings,
+    requestFailures,
+    httpFailures,
+    screenshot,
+  };
   await context.close();
 }
 

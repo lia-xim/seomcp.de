@@ -1,3 +1,5 @@
+import { seoRoutes } from "../src/data/seo.ts";
+
 export const noindexDirective = "noindex, follow, noarchive";
 
 export const contentSecurityPolicy = [
@@ -35,12 +37,13 @@ export function expectedSeoHeaders(indexingEnabled) {
   const headers = [{ source: "/(.*)", headers: globalHeaders }];
 
   if (indexingEnabled) {
-    headers.push(
-      { source: "/security", headers: robotsHeader() },
-      { source: "/impressum", headers: robotsHeader() },
-      { source: "/datenschutz", headers: robotsHeader() },
-      { source: "/.well-known/(.*)", headers: robotsHeader() },
-    );
+    const utilityPaths = Object.values(seoRoutes)
+      .filter((route) => route.sitemap === "never" && route.role !== "error")
+      .map((route) => route.path);
+    headers.push(...utilityPaths.map((source) => ({ source, headers: robotsHeader() })), {
+      source: "/.well-known/(.*)",
+      headers: robotsHeader(),
+    });
   }
 
   return headers;

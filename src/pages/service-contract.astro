@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import { evidenceState, missingServiceEvidence } from "../data/service-evidence";
+---
+
+<BaseLayout routeKey="serviceContract">
+  <div class="page-frame">
+    <SiteHeader />
+    <main id="main-content" class="content-page">
+      <div class="content-shell contract-shell">
+        <header class="content-hero contract-hero">
+          <div><p class="eyebrow">Service-Vertrag · {evidenceState}</p><h1>Noch kein Endpoint. Erst ein Prüfvertrag.</h1></div>
+          <p>Diese Seite veröffentlicht weder eine Verbindungs-URL noch eine MCP-Version. Sie hält fest, welche technische Evidenz vor einer solchen Veröffentlichung reproduzierbar vorliegen muss.</p>
+        </header>
+        <div class="contract-state" role="status"><strong>{evidenceState}</strong><p>Es gibt derzeit keinen freigegebenen öffentlichen Contextter-MCP-Endpunkt und keinen extern bestätigten Protokolltest.</p></div>
+        <div class="content-blocks">
+          <section class="content-block"><span>01</span><h2>Vor Veröffentlichung</h2><ul>{missingServiceEvidence.endpoint.map((item) => <li>{item}</li>)}</ul></section>
+          <section class="content-block"><span>02</span><h2>Der spätere Nachweis</h2><p>Ein Launchbeleg muss Produktions-URL, beobachtete Antworten, Prüfzeitpunkt, eingesetzten Client, negative Fälle und verantwortlichen Owner zusammenführen. Ein Screenshot oder eine geplante URL reicht nicht.</p></section>
+          <section class="content-block"><span>03</span><h2>Bewusste Grenze</h2><p>Bis dieser Nachweis existiert, werden keine Discovery-Metadaten, Kompatibilität, Verfügbarkeit oder Verbindungsanleitung behauptet. Redaktionelle MCP-Erklärungen bleiben auf <a href="https://seo-mcp.de/" rel="external noopener noreferrer">seo-mcp.de</a>.</p></section>
+        </div>
+        <nav class="contract-next" aria-label="Weitere technische Verträge"><a href="/capabilities">Capability-Vertrag</a><a href="/authorization">Auth-Vertrag</a><a href="/status">Launch-Status</a></nav>
+      </div>
+    </main>
+    <SiteFooter />
+  </div>
+</BaseLayout>

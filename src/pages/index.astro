@@ -38,16 +38,16 @@ import { site } from "../data/site";
           </div>
         </header>
 
-        <div class="service-ledger">
+        <div class="service-ledger" id="contracts">
           {site.plannedSurfaces.map((surface) => (
-            <div class="service-row">
+            <a class="service-row" href={surface.href}>
               <strong>{surface.host}</strong>
               <div>
                 <span>{surface.role}</span>
                 <p>{surface.description}</p>
               </div>
               <small>{surface.state}</small>
-            </div>
+            </a>
           ))}
         </div>
       </section>
@@ -79,7 +79,7 @@ import { site } from "../data/site";
         </div>
       </section>
 
-      <section class="gates-section" id="status" aria-labelledby="gates-heading">
+      <section class="gates-section" aria-labelledby="gates-heading">
         <header>
           <h2 id="gates-heading">Freigabe folgt Beweisen.</h2>
           <p>Ein öffentlicher Dienst wird erst angekündigt, wenn Technik, Grenzen und Betrieb geprüft sind.</p>
@@ -93,6 +93,10 @@ import { site } from "../data/site";
             </li>
           ))}
         </ol>
+        <a class="text-action gates-link" href="/status">
+          Vollständigen Beweisstand prüfen
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5" /></svg>
+        </a>
       </section>
 
       <section class="contextter-band" aria-labelledby="contextter-heading">
