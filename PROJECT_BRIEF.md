@@ -32,7 +32,7 @@ fake metrics, or speculative product claims.
 - /impressum — verified operator and contact details.
 - /datenschutz — privacy information for the actual static Vercel deployment.
 - /.well-known/security.txt — machine-readable disclosure route.
-- /404/ — explicit missing-path response with no blanket redirect.
+- /404 — explicit missing-path response with no blanket redirect.
 
 No service, authorization, or status subdomain is published or claimed before its real deployment.
 

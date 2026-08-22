@@ -74,7 +74,7 @@ export const seoRoutes = {
     sitemap: "never",
   },
   notFound: {
-    path: "/404/",
+    path: "/404",
     title: "Seite nicht gefunden",
     description: "Der angeforderte Pfad ist auf seomcp.de nicht belegt.",
     role: "error",

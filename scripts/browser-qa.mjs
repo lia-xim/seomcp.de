@@ -8,10 +8,11 @@ const base = (process.argv[2] ?? "http://127.0.0.1:4321").replace(/\/$/, "");
 const output = process.argv[3] ?? path.join(os.tmpdir(), "seomcp-browser-qa");
 const live = base === "https://seomcp.de";
 const routes = [
-  ["/", "https://seomcp.de/"],
-  ["/security", "https://seomcp.de/security"],
-  ["/impressum", "https://seomcp.de/impressum"],
-  ["/datenschutz", "https://seomcp.de/datenschutz"],
+  { path: "/", canonical: "https://seomcp.de/", status: 200 },
+  { path: "/security", canonical: "https://seomcp.de/security", status: 200 },
+  { path: "/impressum", canonical: "https://seomcp.de/impressum", status: 200 },
+  { path: "/datenschutz", canonical: "https://seomcp.de/datenschutz", status: 200 },
+  { path: "/404", canonical: "https://seomcp.de/404", status: live ? 404 : 200 },
 ];
 const failures = [];
 const evidence = { base, viewports: {}, http: null };
@@ -32,7 +33,7 @@ for (const viewport of [{ width: 1440, height: 1000 }, { width: 390, height: 844
   page.on("requestfailed", (request) => requestFailures.push(`${request.url()} ${request.failure()?.errorText ?? "unknown"}`));
   const routeResults = {};
 
-  for (const [route, canonical] of routes) {
+  for (const { path: route, canonical, status: expectedStatus } of routes) {
     const response = await page.goto(`${base}${route}`, { waitUntil: "networkidle", timeout: 30000 });
     const axe = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"]).analyze();
     const metrics = await page.evaluate(() => {
@@ -57,7 +58,7 @@ for (const viewport of [{ width: 1440, height: 1000 }, { width: 390, height: 844
       metrics,
     };
     routeResults[route] = result;
-    check(result.status === 200, `${viewport.width}px ${route}: status ${result.status}`);
+    check(result.status === expectedStatus, `${viewport.width}px ${route}: status ${result.status}, expected ${expectedStatus}`);
     check(result.h1 === 1, `${viewport.width}px ${route}: h1 ${result.h1}`);
     check(result.canonical === canonical && result.ogUrl === canonical, `${viewport.width}px ${route}: canonical/social mismatch`);
     check(result.robots === "noindex, follow, noarchive", `${viewport.width}px ${route}: robots mismatch`);
@@ -86,6 +87,10 @@ for (const viewport of [{ width: 1440, height: 1000 }, { width: 390, height: 844
   check(page.url().endsWith("/impressum"), `${viewport.width}px: legal navigation failed`);
   check(consoleErrors.length === 0, `${viewport.width}px: console ${consoleErrors.join(" | ")}`);
   check(requestFailures.length === 0, `${viewport.width}px: requests ${requestFailures.join(" | ")}`);
+  await page.goto(`${base}/security`, { waitUntil: "networkidle" });
+  await page.getByRole("link", { name: "/.well-known/security.txt" }).click();
+  await page.waitForURL(/\/\.well-known\/security\.txt$/);
+  check((await page.locator("body").innerText()).includes("Contact: mailto:info@matthiasramahi.de"), `${viewport.width}px: security discovery failed`);
   await page.goto(`${base}/`, { waitUntil: "networkidle" });
   const screenshot = `${output}/seomcp-hardening-${live ? "live" : "local"}-${viewport.width}.png`;
   await page.screenshot({ path: screenshot, fullPage: true });
@@ -117,6 +122,7 @@ if (live) {
   const sitemapIndex = await request(`${base}/sitemap-index.xml`);
   const missing = await request(`${base}/__hardening_missing__`);
   const securityTxt = await request(`${base}/.well-known/security.txt`);
+  const notFoundSlash = await trace(`${base}/404/?source=canonical-audit`);
   const starts = [
     "https://seomcp.de/security/?source=https-apex",
     "https://www.seomcp.de/security/?source=https-www",
@@ -138,13 +144,26 @@ if (live) {
   check(robots.status === 200 && robots.text.includes("Allow: /") && !robots.text.includes("Disallow: /") && !robots.text.includes("Sitemap:"), "robots contract failed");
   check(sitemap.status === 404 && sitemapIndex.status === 404, "sitemap must remain 404");
   check(missing.status === 404, `missing route ${missing.status}`);
-  check(securityTxt.status === 200 && securityTxt.text.includes("Preferred-Languages: de, en"), "security.txt failed");
+  check(missing.text.includes('rel="canonical" href="https://seomcp.de/404"'), "missing route canonical failed");
+  check(
+    securityTxt.status === 200 &&
+      securityTxt.text.includes("Preferred-Languages: de, en") &&
+      securityTxt.text.includes("Contact: mailto:info@matthiasramahi.de"),
+    "security.txt failed",
+  );
+  check(
+    notFoundSlash.final === `${base}/404?source=canonical-audit` &&
+      notFoundSlash.hops.length === 2 &&
+      notFoundSlash.hops[0].status === 308 &&
+      notFoundSlash.response?.status === 404,
+    `404 slash normalization failed ${JSON.stringify(notFoundSlash.hops)}`,
+  );
   traces.forEach((item, index) => {
     check(item.final === expected[index], `redirect final ${item.final}`);
     check(item.hops.length <= 4 && item.hops.slice(0, -1).every((hop) => hop.status === 308), `redirect trace ${JSON.stringify(item.hops)}`);
     check(item.response?.status === 200, `redirect final status ${item.response?.status}`);
   });
-  evidence.http = { apex: { status: apex.status, headers: apex.headers }, robots: robots.status, sitemap: sitemap.status, sitemapIndex: sitemapIndex.status, missing: missing.status, securityTxt: securityTxt.status, traces };
+  evidence.http = { apex: { status: apex.status, headers: apex.headers }, robots: robots.status, sitemap: sitemap.status, sitemapIndex: sitemapIndex.status, missing: missing.status, securityTxt: securityTxt.status, notFoundSlash, traces };
 }
 
 await browser.close();

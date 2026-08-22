@@ -4,6 +4,7 @@ import { site } from "../../data/site";
 export const GET: APIRoute = () =>
   new Response(
     [
+      "Contact: mailto:" + site.operator.email,
       "Contact: " + site.links.securityAdvisory,
       "Canonical: " + new URL("/.well-known/security.txt", site.canonicalUrl),
       "Policy: " + new URL("/security", site.canonicalUrl),

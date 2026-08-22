@@ -25,8 +25,12 @@ import { site } from "../data/site";
             <h2 id="report-heading">Hinweis melden</h2>
             <p>
               Vermutete Schwachstellen, offengelegte Zugangsdaten oder private Informationen bitte
-              nicht als öffentliches Issue posten. Nutze stattdessen{" "}
-              <a href={site.links.securityAdvisory} rel="external noopener noreferrer">GitHubs privaten Security-Advisory-Kanal</a>.
+              nicht als öffentliches Issue posten. Sende den Hinweis direkt an{" "}
+              <a href={`mailto:${site.operator.email}`}>{site.operator.email}</a> oder nutze nach
+              einer GitHub-Anmeldung den{" "}
+              <a href={site.links.securityAdvisory} rel="external noopener noreferrer">privaten Security-Advisory-Kanal</a>.
+              Die maschinenlesbaren Kontaktangaben stehen zusätzlich unter{" "}
+              <a href="/.well-known/security.txt">/.well-known/security.txt</a>.
             </p>
           </section>
 

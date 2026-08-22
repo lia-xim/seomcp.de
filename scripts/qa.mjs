@@ -67,7 +67,9 @@ check(index.includes("Noch ist kein öffentlicher Endpoint freigegeben."), "home
 check(index.includes("Gemeinsamer Betreiber. Keine unabhängige Empfehlung."), "home: shared ownership must be explicit");
 check(index.includes("PRE-LAUNCH / NOINDEX"), "home: visible pre-launch state must remain present");
 check(!/(?:mcp|connect|status)\.seomcp\.de/.test(index), "home: must not publish speculative subdomains");
-check(security.includes("GitHubs privaten Security-Advisory-Kanal"), "security: private reporting path required");
+check(security.includes("privaten Security-Advisory-Kanal"), "security: private reporting path required");
+check(security.includes('href="mailto:info@matthiasramahi.de"'), "security: direct email reporting path required");
+check(security.includes('href="/.well-known/security.txt"'), "security: visible security.txt discovery link required");
 check(notFound.includes("Unbekannte URLs werden nicht pauschal"), "404: no blanket redirect rule required");
 for (const fact of ["Matthias Ramahi", "Kempener Straße 44", "40699 Erkrath", "info@matthiasramahi.de", "+49 176 42 44 98 58"]) check(imprint.includes(fact), `imprint: missing ${fact}`);
 for (const fact of ["Vercel Inc.", "440 N Barranca Avenue #4133", "keine Anmeldung", "keine Analyse-", "keine Cookies", "keine externen Webfonts", "Local Storage", "Session Storage"]) check(privacy.includes(fact), `privacy: missing ${fact}`);
@@ -76,7 +78,8 @@ check(robots === buildRobotsText(), "robots.txt must be generated from central l
 check(robots.includes("Allow: /") && !robots.includes("Disallow: /"), "robots.txt must stay crawlable");
 check(robots.includes("Sitemap:") === indexingEnabled, "robots sitemap discovery must switch with indexing state");
 check(securityTxt.includes("Preferred-Languages: de, en"), "security.txt must expose preferred languages");
-check(securityTxt.includes("Contact: https://github.com/lia-xim/seomcp.de/security/advisories/new"), "security.txt contact required");
+check(securityTxt.includes("Contact: mailto:info@matthiasramahi.de"), "security.txt direct email contact required");
+check(securityTxt.includes("Contact: https://github.com/lia-xim/seomcp.de/security/advisories/new"), "security.txt advisory contact required");
 check(css.includes(":focus-visible") && css.includes("prefers-reduced-motion"), "accessibility CSS required");
 
 check(JSON.stringify(vercel.headers ?? []) === JSON.stringify(expectedSeoHeaders(indexingEnabled)), "Vercel response headers must match central launch policy");
