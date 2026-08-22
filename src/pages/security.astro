@@ -1,0 +1,67 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import { site } from "../data/site";
+---
+
+<BaseLayout
+  title="Sicherheit"
+  description="Sicherheitsgrenzen und Meldeweg für das noch nicht freigegebene seomcp.de-Projekt."
+  canonicalPath="/security"
+>
+  <div class="page-frame">
+    <SiteHeader />
+    <main id="main-content" class="content-page">
+      <div class="content-shell">
+        <header class="content-hero">
+          <h1>Sicherheit beginnt vor dem Endpoint.</h1>
+          <p>
+            seomcp.de stellt derzeit keinen öffentlichen MCP-Endpunkt, keine Autorisierung und keine
+            produktive Capability bereit. Bevor sich das ändert, müssen Mandantentrennung,
+            Berechtigungen, Kostenkontrolle, Audit und Incident-Prozess nachweisbar funktionieren.
+          </p>
+        </header>
+
+        <div class="content-blocks">
+          <section class="content-block" aria-labelledby="report-heading">
+            <span aria-hidden="true">01</span>
+            <h2 id="report-heading">Hinweis melden</h2>
+            <p>
+              Vermutete Schwachstellen, offengelegte Zugangsdaten oder private Informationen bitte
+              nicht als öffentliches Issue posten. Nutze stattdessen{" "}
+              <a href={site.links.securityAdvisory} rel="external noopener noreferrer">GitHubs privaten Security-Advisory-Kanal</a>.
+            </p>
+          </section>
+
+          <section class="content-block" aria-labelledby="current-heading">
+            <span aria-hidden="true">02</span>
+            <h2 id="current-heading">Aktueller Umfang</h2>
+            <ul>
+              <li>Statische, absichtlich nicht indexierbare Projektseite.</li>
+              <li>Kein Login, keine Uploads, keine Nutzer- oder Workspace-Daten.</li>
+              <li>Keine öffentliche MCP-Verbindung und keine versprochene Verfügbarkeit.</li>
+            </ul>
+          </section>
+
+          <section class="content-block" aria-labelledby="launch-heading">
+            <span aria-hidden="true">03</span>
+            <h2 id="launch-heading">Vor einer Freigabe</h2>
+            <ul>
+              <li>Scopes müssen Benutzer, Organisation, Workspace und Ressource korrekt binden.</li>
+              <li>Kostenpflichtige und destruktive Aktionen brauchen Limits, Vorschau und explizite Freigaben.</li>
+              <li>Status und Incident-Kommunikation müssen extern prüfbar sein.</li>
+              <li>Discovery- und Sicherheitsmetadaten müssen der tatsächlich deployten Version entsprechen.</li>
+            </ul>
+          </section>
+        </div>
+
+        <a class="text-action content-back" href="/">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M19 12H5m5-5-5 5 5 5" /></svg>
+          Zurück zur Projektseite
+        </a>
+      </div>
+    </main>
+    <SiteFooter />
+  </div>
+</BaseLayout>

@@ -1,0 +1,59 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import { site } from "../data/site";
+---
+
+<BaseLayout title="Impressum" description="Anbieterkennzeichnung und Kontakt für seomcp.de." canonicalPath="/impressum">
+  <div class="page-frame">
+    <SiteHeader />
+    <main id="main-content" class="content-page legal-page">
+      <div class="content-shell legal-shell">
+        <header class="content-hero legal-hero">
+          <p class="eyebrow">Anbieterkennzeichnung</p>
+          <h1>Impressum</h1>
+          <p>Angaben zum Verantwortlichen dieser technischen Projektseite.</p>
+        </header>
+        <div class="legal-grid">
+          <section class="legal-section" aria-labelledby="operator-heading">
+            <h2 id="operator-heading">Diensteanbieter</h2>
+            <address>
+              <strong>{site.operator.name}</strong><br />
+              {site.operator.address[0]}<br />
+              {site.operator.address[1]}<br />
+              {site.operator.address[2]}
+            </address>
+          </section>
+          <section class="legal-section" aria-labelledby="contact-heading">
+            <h2 id="contact-heading">Kontakt</h2>
+            <p>
+              E-Mail: <a href={`mailto:${site.operator.email}`}>{site.operator.email}</a><br />
+              Telefon: <a href={`tel:${site.operator.phoneHref}`}>{site.operator.phoneLabel}</a>
+            </p>
+          </section>
+          <section class="legal-section legal-section-wide" aria-labelledby="responsibility-heading">
+            <h2 id="responsibility-heading">Verantwortlich für den Inhalt</h2>
+            <p>{site.operator.name}, Anschrift wie oben.</p>
+          </section>
+          <section class="legal-section legal-section-wide" aria-labelledby="separation-heading">
+            <h2 id="separation-heading">Einordnung der Domain</h2>
+            <p>
+              seomcp.de ist die technische Betriebs- und künftige Service-Domain für das Contextter-MCP-Vorhaben.
+              Redaktionelle Forschung, Wissen und Vergleiche gehören auf <a href={site.links.editorial} rel="external noopener noreferrer">seo-mcp.de</a>.
+              Beide Angebote haben denselben Betreiber und sind keine voneinander unabhängigen Quellen.
+            </p>
+          </section>
+          <section class="legal-section legal-section-wide" aria-labelledby="rights-heading">
+            <h2 id="rights-heading">Rechte und Inhalte</h2>
+            <p>
+              Die Domain ist eine neue Registrierung. Es wird keine frühere Website oder Betreiberidentität fortgeführt.
+              Marken, Inhalte, Daten, Medien und Code Dritter werden nur im Rahmen der jeweils geltenden Rechte verwendet.
+            </p>
+          </section>
+        </div>
+      </div>
+    </main>
+    <SiteFooter />
+  </div>
+</BaseLayout>

@@ -1,40 +1,112 @@
 ---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ConnectionPreview from "../components/ConnectionPreview.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
 import { site } from "../data/site";
-import "../styles/global.css";
 ---
 
-<!doctype html>
-<html lang={site.language}>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="robots" content="noindex, nofollow, noarchive" />
-    <meta name="description" content={site.description} />
-    <title>{site.title} | Project setup</title>
-  </head>
-  <body>
-    <main>
-      <div class="eyebrow">{site.domain} · Project setup</div>
-      <h1>{site.title}</h1>
-      <p class="purpose">{site.purpose}</p>
+<BaseLayout>
+  <div class="page-frame">
+    <SiteHeader />
 
-      <section aria-labelledby="status-heading">
-        <h2 id="status-heading">Current status</h2>
-        <p>{site.status}</p>
+    <main id="main-content">
+      <section class="hero" aria-labelledby="hero-heading">
+        <div class="hero-copy">
+          <h1 id="hero-heading">Contextter für MCP – mit klaren Grenzen von Anfang an.</h1>
+          <p>{site.purpose}</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#vorhaben">Vorhaben ansehen</a>
+            <a class="text-action" href={site.links.contextter} rel="external noopener noreferrer">
+              Contextter entdecken
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5" /></svg>
+            </a>
+          </div>
+        </div>
+        <ConnectionPreview />
       </section>
 
-      <section aria-labelledby="boundary-heading">
-        <h2 id="boundary-heading">Hard boundary</h2>
-        <p>{site.boundary}</p>
+      <section class="service-section" id="vorhaben" aria-labelledby="service-heading">
+        <header class="service-intro">
+          <h2 id="service-heading">Was hier entsteht</h2>
+          <div>
+            <p class="section-lead">Ein technischer Zugangspunkt.<br />Nicht noch ein SEO-Magazin.</p>
+            <p>
+              Der Dienst soll unterstützte MCP-Clients sicher mit Contextter verbinden.
+              Redaktionelle Einordnung und Vergleiche bleiben bewusst auf <a href={site.links.editorial} rel="external noopener noreferrer">seo-mcp.de</a>.
+            </p>
+          </div>
+        </header>
+
+        <div class="service-ledger">
+          {site.plannedSurfaces.map((surface) => (
+            <div class="service-row">
+              <strong>{surface.host}</strong>
+              <div>
+                <span>{surface.role}</span>
+                <p>{surface.description}</p>
+              </div>
+              <small>{surface.state}</small>
+            </div>
+          ))}
+        </div>
       </section>
 
-      <div class="actions">
-        <a href={site.githubUrl}>View the public source repository</a>
-      </div>
+      <section class="domain-section" aria-labelledby="domain-heading">
+        <h2 id="domain-heading">Zwei Domains. Zwei klare Aufgaben.</h2>
+        <div class="domain-grid">
+          <div class="domain-column">
+            <strong>seomcp.de</strong>
+            <div>
+              <h3>Technischer Betrieb</h3>
+              <p>Hier gehören später Verbindung, Autorisierung, Sicherheit und Betriebsstatus hin.</p>
+            </div>
+          </div>
+          <div class="domain-column domain-column-tinted">
+            <strong>seo-mcp.de</strong>
+            <div>
+              <h3>Wissen &amp; Vergleiche</h3>
+              <p>Dort gehören Implementierungshilfen, Kompatibilität und redaktionelle Bewertungen hin.</p>
+            </div>
+          </div>
+        </div>
+        <div class="ownership-bar">
+          <p>Gemeinsamer Betreiber. Keine unabhängige Empfehlung.</p>
+          <a href="/security">
+            Sicherheitsgrundsätze ansehen
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5" /></svg>
+          </a>
+        </div>
+      </section>
 
-      <p class="note">This temporary project page is deliberately excluded from indexing. The custom domain is not connected yet.</p>
+      <section class="gates-section" id="status" aria-labelledby="gates-heading">
+        <header>
+          <h2 id="gates-heading">Freigabe folgt Beweisen.</h2>
+          <p>Ein öffentlicher Dienst wird erst angekündigt, wenn Technik, Grenzen und Betrieb geprüft sind.</p>
+        </header>
+        <ol class="gate-grid">
+          {site.launchGates.map((gate) => (
+            <li>
+              <span>{gate.number}</span>
+              <h3>{gate.label}</h3>
+              <p>{gate.description}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section class="contextter-band" aria-labelledby="contextter-heading">
+        <div>
+          <h2 id="contextter-heading">Die SEO-Plattform hinter dem Vorhaben.</h2>
+          <p>Contextter verbindet Keyword-Datenbank, Site Audit und priorisierte nächste Schritte.</p>
+        </div>
+        <a class="band-button" href={site.links.contextter} rel="external noopener noreferrer">
+          Contextter entdecken
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5" /></svg>
+        </a>
+      </section>
     </main>
-  </body>
-</html>
 
-
+    <SiteFooter />
+  </div>
+</BaseLayout>

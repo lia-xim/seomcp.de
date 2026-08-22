@@ -1,0 +1,19 @@
+---
+import { site } from "../data/site";
+---
+
+<header class="site-header">
+  <a class="brand" href="/" aria-label="seomcp.de Startseite">
+    <span>{site.domain}</span>
+  </a>
+  <nav aria-label="Hauptnavigation">
+    <ul>
+      {site.navigation.map((item) => (
+        <li><a href={item.href}>{item.label}</a></li>
+      ))}
+    </ul>
+  </nav>
+  <a class="header-cta" href={site.links.contextter} rel="external noopener noreferrer">
+    Contextter
+  </a>
+</header>

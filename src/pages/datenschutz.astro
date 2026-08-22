@@ -1,0 +1,97 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import { site } from "../data/site";
+---
+
+<BaseLayout title="Datenschutz" description="Datenschutzhinweise für die statische Projektseite seomcp.de." canonicalPath="/datenschutz">
+  <div class="page-frame">
+    <SiteHeader />
+    <main id="main-content" class="content-page legal-page">
+      <div class="content-shell legal-shell">
+        <header class="content-hero legal-hero">
+          <p class="eyebrow">Stand: 22. August 2026</p>
+          <h1>Datenschutz</h1>
+          <p>Diese Hinweise beschreiben die derzeit tatsächlich bereitgestellte, statische Pre-Launch-Website.</p>
+        </header>
+        <div class="legal-stack">
+          <section class="legal-section" aria-labelledby="controller-heading">
+            <h2 id="controller-heading">1. Verantwortlicher</h2>
+            <address>
+              <strong>{site.operator.name}</strong><br />
+              {site.operator.address[0]}<br />
+              {site.operator.address[1]}<br />
+              {site.operator.address[2]}<br />
+              <a href={`mailto:${site.operator.email}`}>{site.operator.email}</a><br />
+              <a href={`tel:${site.operator.phoneHref}`}>{site.operator.phoneLabel}</a>
+            </address>
+          </section>
+          <section class="legal-section" aria-labelledby="hosting-heading">
+            <h2 id="hosting-heading">2. Hosting und Server-Protokolle</h2>
+            <p>
+              Die Website wird als statische Seite über Vercel bereitgestellt (Vercel Inc., 440 N Barranca Avenue #4133,
+              Covina, CA 91723, USA). Beim Abruf können technisch erforderliche Verbindungs- und Protokolldaten verarbeitet
+              werden, insbesondere IP-Adresse, Zeitpunkt, angeforderte URL, Browser-/Geräteinformationen sowie Status- und
+              Fehlerdaten. Das dient der sicheren, stabilen Bereitstellung und Fehleranalyse auf Grundlage von Art. 6 Abs. 1
+              lit. f DSGVO. Das berechtigte Interesse liegt im sicheren Betrieb dieser Website.
+            </p>
+            <p>
+              Vercel beschreibt internationale Übermittlungen und seine Teilnahme am EU-U.S. Data Privacy Framework in der
+              <a href={site.links.vercelPrivacy} rel="external noopener noreferrer">Datenschutzerklärung von Vercel</a>.
+            </p>
+          </section>
+          <section class="legal-section" aria-labelledby="features-heading">
+            <h2 id="features-heading">3. Keine Konten, Formulare oder Produktdaten</h2>
+            <p>
+              Derzeit gibt es auf seomcp.de keine Anmeldung, Nutzerkonten, Authentifizierung, Formulare, Uploads, MCP-Endpunkte
+              oder lokale Datenspeicherung für Nutzer-, Mandanten-, Workspace- oder Kundendaten. Die Website verspricht keinen
+              produktiven Dienst.
+            </p>
+          </section>
+          <section class="legal-section" aria-labelledby="tracking-heading">
+            <h2 id="tracking-heading">4. Analytics, Cookies, Speicher und Schriftarten</h2>
+            <p>
+              Es werden keine Analyse-, Tracking- oder Werbedienste eingesetzt. Die Website setzt selbst keine Cookies und
+              nutzt weder Local Storage noch Session Storage. Es werden keine externen Webfonts geladen; verwendet werden
+              lokal auf dem Endgerät vorhandene Systemschriftarten.
+            </p>
+          </section>
+          <section class="legal-section" aria-labelledby="communication-heading">
+            <h2 id="communication-heading">5. Kontaktaufnahme</h2>
+            <p>
+              Bei einer Kontaktaufnahme per E-Mail oder Telefon werden die übermittelten Angaben zur Bearbeitung des Anliegens
+              verarbeitet. Rechtsgrundlage ist je nach Inhalt Art. 6 Abs. 1 lit. b oder lit. f DSGVO. Sicherheitsmeldungen
+              können über den auf der <a href="/security">Sicherheitsseite</a> genannten privaten Kanal erfolgen.
+            </p>
+          </section>
+          <section class="legal-section" aria-labelledby="links-heading">
+            <h2 id="links-heading">6. Externe Links</h2>
+            <p>
+              Verbindungen zu externen Angeboten wie Contextter, seo-mcp.de, GitHub oder Vercel entstehen erst, wenn ein solcher
+              Link aufgerufen wird. Dann gelten die Datenschutzhinweise des jeweiligen Anbieters. Externe Links dieser Website
+              unterdrücken soweit technisch unterstützt die Übermittlung der Referrer-URL.
+            </p>
+          </section>
+          <section class="legal-section" aria-labelledby="rights-heading">
+            <h2 id="rights-heading">7. Betroffenenrechte</h2>
+            <p>
+              Betroffene Personen haben nach Maßgabe der DSGVO insbesondere Rechte auf Auskunft, Berichtigung, Löschung,
+              Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch. Außerdem besteht ein Beschwerderecht bei
+              einer Datenschutzaufsichtsbehörde, etwa bei der
+              <a href={site.links.privacyAuthority} rel="external noopener noreferrer">Landesbeauftragten für Datenschutz und Informationsfreiheit Nordrhein-Westfalen</a>.
+            </p>
+          </section>
+          <section class="legal-section" aria-labelledby="security-update-heading">
+            <h2 id="security-update-heading">8. Sicherheit und Änderungen</h2>
+            <p>
+              Die Übertragung erfolgt über HTTPS. Ein absoluter Schutz elektronischer Kommunikation kann nicht garantiert
+              werden. Diese Hinweise werden angepasst, wenn sich Hosting, Funktionen, Dienstleister oder Verarbeitungen ändern.
+            </p>
+          </section>
+        </div>
+      </div>
+    </main>
+    <SiteFooter />
+  </div>
+</BaseLayout>

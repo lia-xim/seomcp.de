@@ -4,7 +4,7 @@ Public source repository for the future `seomcp.de` website.
 
 ## Current state
 
-Repository and Vercel foundation only. The planned public tool, reference, service, or publication is not launched on the custom domain yet. The temporary deployment is deliberately excluded from indexing.
+Designed pre-launch service surface and Vercel foundation. The future public MCP service is not launched yet. The current deployment is deliberately excluded from indexing and makes no endpoint, uptime, authorization, or capability claim.
 
 ## Standalone purpose
 
@@ -12,7 +12,7 @@ Diese Domain ist für Endpoint, Discovery-Metadaten, Autorisierung, Sicherheitsk
 
 ## Current status
 
-Reservierte Infrastruktur. Es ist noch kein öffentlicher MCP-Endpunkt freigegeben.
+Reservierte Infrastruktur mit Serviceplan, Sicherheitsgrenze und öffentlichem Projektstatus. Es ist noch kein öffentlicher MCP-Endpunkt freigegeben.
 
 ## Hard boundary
 
@@ -37,10 +37,10 @@ corepack pnpm verify
 
 Vercel project: `seomcp-de`.
 
-The placeholder carries both a robots exclusion and an `X-Robots-Tag`. Remove those only when the real site passes its strategy, rights, disclosure, quality, and launch gates. Connecting the custom domain and changing DNS are separate operations.
+The public pre-launch surface remains crawlable, but carries page-level robots exclusions and an `X-Robots-Tag`. Its `robots.txt` allows crawling so crawlers can observe `noindex`. Remove those exclusions only when the real service passes its strategy, rights, disclosure, quality, security, and launch gates. Connecting the custom domain and changing DNS are separate operations.
 
 ## Rights
 
-This repository is public for operational transparency. No license to reuse former-site content, identities, brands, media, datasets, code, subscribers, customers, or other third-party material is granted. No open-source license is granted unless a later commit adds one explicitly.
+The domain is an owner-confirmed new registration, not an expired domain. There is no legacy site, former operator, archive identity, or historical brand to continue. Normal third-party rights still apply: this public repository grants no license to reuse external content, brands, media, datasets, or code. No open-source license is granted unless a later commit adds one explicitly.
 
 

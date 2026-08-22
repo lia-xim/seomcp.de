@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "domain": "seomcp.de",
+  "reviewedAt": "2026-08-22",
+  "rights": {
+    "domainOrigin": "new_registration",
+    "expiredDomain": false,
+    "formerOperatorOrSite": false,
+    "legacyContinuityClaimed": false,
+    "thirdPartyMaterialRequiresRights": true,
+    "notes": "Owner-confirmed new registration. No legacy, archive, former-operator, historical-rights, or brand-continuation gate applies; ordinary third-party rights remain relevant."
+  },
+  "sources": [
+    {
+      "id": "owner-correction",
+      "kind": "owner_confirmed",
+      "location": "Delegated project instruction dated 2026-08-22",
+      "supports": [
+        "new registration",
+        "no expired-domain or legacy continuity"
+      ]
+    },
+    {
+      "id": "portfolio-domain-dossier",
+      "kind": "authoritative_strategy",
+      "location": "C:/Users/matth/Documents/DomainPortfolio/strategy/domains/seomcp.de.md",
+      "supports": [
+        "ownership",
+        "Contextter assignment",
+        "infrastructure-only purpose",
+        "no-placeholder-claims boundary"
+      ]
+    },
+    {
+      "id": "operator-imprint-source",
+      "kind": "verified_local_source",
+      "location": "C:/Users/matth/Documents/MatthiasRamahiDe/apps/web/content/pages/impressum.json",
+      "observedAt": "2026-08-22",
+      "supports": [
+        "operator name",
+        "postal address",
+        "email",
+        "phone"
+      ]
+    },
+    {
+      "id": "vercel-privacy",
+      "kind": "verified_live",
+      "location": "https://vercel.com/legal/privacy-notice",
+      "observedAt": "2026-08-22",
+      "supports": [
+        "hosting provider identity",
+        "traffic and log data",
+        "international transfer information"
+      ]
+    },
+    {
+      "id": "contextter-public-site",
+      "kind": "verified_live",
+      "location": "https://contextter.com/",
+      "observedAt": "2026-08-22",
+      "supports": [
+        "Keyword Database",
+        "Site Audit",
+        "separate workspaces"
+      ]
+    },
+    {
+      "id": "local-project-contract",
+      "kind": "repository_contract",
+      "location": "README.md and src/data/site.ts",
+      "supports": [
+        "pre-launch status",
+        "noindex requirement",
+        "no endpoint or capability claim"
+      ]
+    }
+  ]
+}
