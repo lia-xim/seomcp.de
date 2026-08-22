@@ -50,12 +50,13 @@ The domain is owner-confirmed as a newly registered domain and assigned to Conte
 canonical DomainPortfolio. No expired-domain, former-operator, archive, historical-rights, or
 brand-continuation gate applies. Current Contextter product
 copy is limited to its verified public positioning around Keyword Database, Site Audit, and
-workspaces. Unknown service-owner, canonical endpoint, auth, status, and incident details remain
-unknown.
+workspaces. No real MCP endpoint, auth/tenancy/cost contract, named service/security owner, or externally
+verified status/incident process exists. The public documentation therefore has a direct transparency job
+but not yet a distinct indexable search job.
 
 ## Launch gates
 
-1. Keep meta robots and X-Robots-Tag at noindex until explicit launch approval. Keep the public preview crawlable through `robots.txt` so crawlers can observe the exclusion.
+1. Keep the preview crawlable and noindex until every gate in the central SEO registry has verified evidence. The conditional launch approval is recorded, but the minimum viable service does not yet exist.
 2. Select a canonical endpoint and named service/security owners.
 3. Verify tenant isolation, scopes, authorization, limits, cost controls, audit, privacy, and
    incident handling.

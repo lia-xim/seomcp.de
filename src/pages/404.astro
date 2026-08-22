@@ -3,11 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 ---
 
-<BaseLayout
-  title="Nicht gefunden"
-  description="Diese Seite existiert auf seomcp.de nicht."
-  canonicalPath="/404/"
->
+<BaseLayout routeKey="notFound">
   <div class="page-frame">
     <SiteHeader />
     <main id="main-content" class="not-found-page">

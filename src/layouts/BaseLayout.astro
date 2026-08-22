@@ -1,19 +1,23 @@
 ---
 import { site } from "../data/site";
+import {
+  indexingEnabled,
+  isRouteIndexable,
+  NOINDEX_DIRECTIVE,
+  seoRoutes,
+  type SeoRouteKey,
+} from "../data/seo";
 import "../styles/global.css";
 
 interface Props {
-  title?: string;
-  description?: string;
-  canonicalPath?: string;
+  routeKey: SeoRouteKey;
 }
 
-const {
-  title = site.title,
-  description = site.description,
-  canonicalPath = "/",
-} = Astro.props;
-const canonical = new URL(canonicalPath, site.canonicalUrl);
+const { routeKey } = Astro.props;
+const route = seoRoutes[routeKey];
+const canonical = new URL(route.path, site.canonicalUrl);
+const robots = isRouteIndexable(route) ? "index, follow" : NOINDEX_DIRECTIVE;
+const documentTitle = `${route.title} | ${site.domain}`;
 ---
 
 <!doctype html>
@@ -21,12 +25,23 @@ const canonical = new URL(canonicalPath, site.canonicalUrl);
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="robots" content="noindex, nofollow, noarchive" />
-    <meta name="description" content={description} />
+    <meta name="robots" content={robots} />
+    <meta name="description" content={route.description} />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="theme-color" content="#ffffff" />
-    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="de_DE" />
+    <meta property="og:site_name" content={site.domain} />
+    <meta property="og:title" content={documentTitle} />
+    <meta property="og:description" content={route.description} />
+    <meta property="og:url" content={canonical.href} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={documentTitle} />
+    <meta name="twitter:description" content={route.description} />
+    <link rel="canonical" href={canonical.href} />
+    {indexingEnabled && <link rel="sitemap" href="/sitemap-index.xml" />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <title>{title} | {site.domain}</title>
+    <title>{documentTitle}</title>
   </head>
   <body>
     <a class="skip-link" href="#main-content">Zum Inhalt springen</a>

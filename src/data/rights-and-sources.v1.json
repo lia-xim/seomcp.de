@@ -74,6 +74,37 @@
         "noindex requirement",
         "no endpoint or capability claim"
       ]
+    },
+    {
+      "id": "google-noindex",
+      "kind": "current_primary_documentation",
+      "location": "https://developers.google.com/search/docs/crawling-indexing/block-indexing",
+      "observedAt": "2026-08-22",
+      "supports": [
+        "crawlable noindex requirement",
+        "meta and X-Robots-Tag behavior"
+      ]
+    },
+    {
+      "id": "google-sitemaps",
+      "kind": "current_primary_documentation",
+      "location": "https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap",
+      "observedAt": "2026-08-22",
+      "supports": [
+        "canonical indexable sitemap membership",
+        "automatic generation guidance"
+      ]
+    },
+    {
+      "id": "astro-sitemap",
+      "kind": "current_primary_documentation",
+      "location": "https://docs.astro.build/en/guides/integrations-guide/sitemap/",
+      "observedAt": "2026-08-22",
+      "supports": [
+        "automatic static-route discovery",
+        "filter configuration",
+        "robots discovery"
+      ]
     }
   ]
 }

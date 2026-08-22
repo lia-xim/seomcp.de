@@ -1,10 +1,11 @@
+import { seoRoutes, SITE_ORIGIN } from "./seo";
+
 export const site = {
   domain: "seomcp.de",
   language: "de",
-  title: "Contextter für MCP – mit klaren Grenzen",
-  description:
-    "Technischer Projektstatus der geplanten Contextter-MCP-Oberfläche. Noch ist kein öffentlicher Endpoint freigegeben.",
-  canonicalUrl: "https://seomcp.de/",
+  title: seoRoutes.home.title,
+  description: seoRoutes.home.description,
+  canonicalUrl: SITE_ORIGIN,
   purpose:
     "seomcp.de wird die technische Verbindung zwischen unterstützten MCP-Clients und Contextter. Noch ist kein öffentlicher Endpoint freigegeben.",
   status: "Reservierte Infrastruktur. Kein öffentlicher MCP-Endpunkt ist freigegeben.",

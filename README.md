@@ -39,6 +39,13 @@ Vercel project: `seomcp-de`.
 
 The public pre-launch surface remains crawlable, but carries page-level robots exclusions and an `X-Robots-Tag`. Its `robots.txt` allows crawling so crawlers can observe `noindex`. Remove those exclusions only when the real service passes its strategy, rights, disclosure, quality, security, and launch gates. Connecting the custom domain and changing DNS are separate operations.
 
+## SEO and launch control
+
+SEO metadata, launch readiness, canonical routes and sitemap eligibility are owned by `src/data/seo.ts`.
+The official `@astrojs/sitemap` integration discovers built routes and includes only registry-approved,
+indexable canonicals. The current service gates are not met, so the preview remains crawlable and noindex.
+See `SEO_LAUNCH.md` for the evidence register and atomic release procedure.
+
 ## Rights
 
 The domain is an owner-confirmed new registration, not an expired domain. There is no legacy site, former operator, archive identity, or historical brand to continue. Normal third-party rights still apply: this public repository grants no license to reuse external content, brands, media, datasets, or code. No open-source license is granted unless a later commit adds one explicitly.

@@ -7,6 +7,7 @@ export const GET: APIRoute = () =>
       "Contact: " + site.links.securityAdvisory,
       "Canonical: " + new URL("/.well-known/security.txt", site.canonicalUrl),
       "Policy: " + new URL("/security", site.canonicalUrl),
+      "Preferred-Languages: de, en",
       "Expires: 2027-08-22T00:00:00.000Z",
       "",
     ].join("\n"),
