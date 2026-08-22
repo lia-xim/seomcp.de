@@ -34,6 +34,7 @@ for (const viewport of [{ width: 1440, height: 1000 }, { width: 390, height: 844
   const routeResults = {};
 
   for (const { path: route, canonical, status: expectedStatus } of routes) {
+    const routeConsoleStart = consoleErrors.length;
     const response = await page.goto(`${base}${route}`, { waitUntil: "networkidle", timeout: 30000 });
     const axe = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"]).analyze();
     const metrics = await page.evaluate(() => {
@@ -67,6 +68,12 @@ for (const viewport of [{ width: 1440, height: 1000 }, { width: 390, height: 844
     check(metrics.dcl < 2500 && metrics.load < 4000, `${viewport.width}px ${route}: performance dcl=${metrics.dcl} load=${metrics.load}`);
     check(metrics.resources <= 20 && metrics.transferBytes <= 1_000_000, `${viewport.width}px ${route}: payload resources=${metrics.resources} bytes=${metrics.transferBytes}`);
     check(axe.violations.length === 0, `${viewport.width}px ${route}: Axe ${axe.violations.map((item) => item.id).join(",")}`);
+    if (route === "/404" && result.status === expectedStatus) {
+      const unexpectedRouteErrors = consoleErrors
+        .slice(routeConsoleStart)
+        .filter((message) => !/^Failed to load resource: the server responded with a status of 404(?: \(\))?$/.test(message));
+      consoleErrors.splice(routeConsoleStart, consoleErrors.length - routeConsoleStart, ...unexpectedRouteErrors);
+    }
   }
 
   await page.goto(`${base}/`, { waitUntil: "networkidle" });
