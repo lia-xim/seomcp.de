@@ -26,6 +26,8 @@ job of `seo-mcp.de`.
 - `robots.txt` always permits crawling and references the sitemap only after the launch gates pass.
 - `BaseLayout.astro` derives canonical and robots metadata from the same registry.
 - `vercel.json` is guarded by `pnpm seo:check`; `pnpm seo:sync` updates X-Robots-Tag routes from the same launch state.
+- The same checked Vercel contract applies CSP, `nosniff`, referrer, permissions and frame policies globally.
+- `trailingSlash: false` normalizes non-root slash variants to extensionless canonicals with a permanent redirect.
 
 ## Page-action matrix
 

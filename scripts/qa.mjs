@@ -12,7 +12,7 @@ import {
   seoRoutes,
   SITE_ORIGIN,
 } from "../src/data/seo.ts";
-import { expectedSeoHeaders } from "./seo-headers-core.mjs";
+import { contentSecurityPolicy, expectedSeoHeaders, securityHeaders } from "./seo-headers-core.mjs";
 
 const domain = "seomcp.de";
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
@@ -79,8 +79,31 @@ check(securityTxt.includes("Preferred-Languages: de, en"), "security.txt must ex
 check(securityTxt.includes("Contact: https://github.com/lia-xim/seomcp.de/security/advisories/new"), "security.txt contact required");
 check(css.includes(":focus-visible") && css.includes("prefers-reduced-motion"), "accessibility CSS required");
 
-check(JSON.stringify(vercel.headers ?? []) === JSON.stringify(expectedSeoHeaders(indexingEnabled)), "Vercel X-Robots headers must match central launch policy");
+check(JSON.stringify(vercel.headers ?? []) === JSON.stringify(expectedSeoHeaders(indexingEnabled)), "Vercel response headers must match central launch policy");
+check(vercel.trailingSlash === false, "Vercel must normalize non-root trailing slashes with a permanent redirect");
 check(!("redirects" in vercel), "Vercel must not add unreviewed redirects");
+
+const globalHeaderContract = (vercel.headers ?? []).find((entry) => entry.source === "/(.*)")?.headers ?? [];
+for (const expectedHeader of securityHeaders) {
+  check(
+    globalHeaderContract.some((header) => header.key === expectedHeader.key && header.value === expectedHeader.value),
+    `global security header must match contract: ${expectedHeader.key}`,
+  );
+}
+check(contentSecurityPolicy.includes("frame-ancestors 'none'"), "CSP must deny framing");
+check(contentSecurityPolicy.includes("object-src 'none'"), "CSP must deny plugin objects");
+check(contentSecurityPolicy.includes("script-src 'none'"), "static prelaunch CSP must deny scripts");
+const simulatedLaunchHeaders = expectedSeoHeaders(true);
+const simulatedLaunchGlobal = simulatedLaunchHeaders.find((entry) => entry.source === "/(.*)")?.headers ?? [];
+check(!simulatedLaunchGlobal.some((header) => header.key === "X-Robots-Tag"), "launch simulation must remove global X-Robots-Tag");
+for (const path of ["/security", "/impressum", "/datenschutz", "/.well-known/(.*)"]) {
+  check(
+    simulatedLaunchHeaders.some(
+      (entry) => entry.source === path && entry.headers.some((header) => header.key === "X-Robots-Tag" && header.value === NOINDEX_DIRECTIVE),
+    ),
+    `launch simulation must retain utility noindex header: ${path}`,
+  );
+}
 
 const sitemapFiles = (await readdir(dist)).filter((name) => /^sitemap(?:-|\.)[^/]*\.xml$/.test(name));
 const urlSitemapFiles = sitemapFiles.filter((name) => name !== "sitemap-index.xml");

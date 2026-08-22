@@ -13,6 +13,7 @@
     "preview": "astro preview",
     "check": "astro check",
     "qa": "node scripts/qa.mjs",
+    "qa:browser": "node scripts/browser-qa.mjs",
     "verify": "pnpm build && pnpm qa",
     "seo:sync": "node scripts/sync-seo-headers.mjs --write",
     "seo:check": "node scripts/sync-seo-headers.mjs --check"
@@ -23,6 +24,8 @@
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
+    "@axe-core/playwright": "4.13.0",
+    "playwright": "1.62.1",
     "typescript": "5.9.3"
   },
   "packageManager": "pnpm@10.33.2"

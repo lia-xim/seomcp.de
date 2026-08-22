@@ -46,6 +46,10 @@ The official `@astrojs/sitemap` integration discovers built routes and includes 
 indexable canonicals. The current service gates are not met, so the preview remains crawlable and noindex.
 See `SEO_LAUNCH.md` for the evidence register and atomic release procedure.
 
+Vercel normalizes non-root trailing-slash variants to the extensionless canonical path with a permanent
+redirect. The shared response-header contract adds CSP, `nosniff`, referrer, permissions and framing
+policies on every route; the build fails if `vercel.json` drifts from that contract.
+
 ## Rights
 
 The domain is an owner-confirmed new registration, not an expired domain. There is no legacy site, former operator, archive identity, or historical brand to continue. Normal third-party rights still apply: this public repository grants no license to reuse external content, brands, media, datasets, or code. No open-source license is granted unless a later commit adds one explicitly.

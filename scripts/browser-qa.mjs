@@ -1,0 +1,153 @@
+import fs from "node:fs/promises";
+import os from "node:os";
+import path from "node:path";
+import AxeBuilder from "@axe-core/playwright";
+import { chromium } from "playwright";
+
+const base = (process.argv[2] ?? "http://127.0.0.1:4321").replace(/\/$/, "");
+const output = process.argv[3] ?? path.join(os.tmpdir(), "seomcp-browser-qa");
+const live = base === "https://seomcp.de";
+const routes = [
+  ["/", "https://seomcp.de/"],
+  ["/security", "https://seomcp.de/security"],
+  ["/impressum", "https://seomcp.de/impressum"],
+  ["/datenschutz", "https://seomcp.de/datenschutz"],
+];
+const failures = [];
+const evidence = { base, viewports: {}, http: null };
+const check = (value, message) => { if (!value) failures.push(message); };
+await fs.mkdir(output, { recursive: true });
+const browser = await chromium.launch({ channel: "chrome", headless: true });
+
+for (const viewport of [{ width: 1440, height: 1000 }, { width: 390, height: 844 }]) {
+  const context = await browser.newContext({ viewport, reducedMotion: "reduce" });
+  const page = await context.newPage();
+  const consoleErrors = [];
+  const consoleWarnings = [];
+  const requestFailures = [];
+  page.on("console", (message) => {
+    if (message.type() === "error") consoleErrors.push(message.text());
+    if (message.type() === "warning") consoleWarnings.push(message.text());
+  });
+  page.on("requestfailed", (request) => requestFailures.push(`${request.url()} ${request.failure()?.errorText ?? "unknown"}`));
+  const routeResults = {};
+
+  for (const [route, canonical] of routes) {
+    const response = await page.goto(`${base}${route}`, { waitUntil: "networkidle", timeout: 30000 });
+    const axe = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"]).analyze();
+    const metrics = await page.evaluate(() => {
+      const nav = performance.getEntriesByType("navigation")[0];
+      const resources = performance.getEntriesByType("resource");
+      return {
+        dcl: Math.round(nav?.domContentLoadedEventEnd ?? 0),
+        load: Math.round(nav?.loadEventEnd ?? 0),
+        resources: resources.length,
+        transferBytes: Math.round(resources.reduce((sum, item) => sum + (item.transferSize || 0), 0)),
+        overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
+      };
+    });
+    const result = {
+      status: response?.status(),
+      h1: await page.locator("h1").count(),
+      canonical: await page.locator('link[rel="canonical"]').getAttribute("href"),
+      robots: await page.locator('meta[name="robots"]').getAttribute("content"),
+      ogUrl: await page.locator('meta[property="og:url"]').getAttribute("content"),
+      twitterCard: await page.locator('meta[name="twitter:card"]').getAttribute("content"),
+      axe: axe.violations.map(({ id, impact, nodes }) => ({ id, impact, nodes: nodes.length })),
+      metrics,
+    };
+    routeResults[route] = result;
+    check(result.status === 200, `${viewport.width}px ${route}: status ${result.status}`);
+    check(result.h1 === 1, `${viewport.width}px ${route}: h1 ${result.h1}`);
+    check(result.canonical === canonical && result.ogUrl === canonical, `${viewport.width}px ${route}: canonical/social mismatch`);
+    check(result.robots === "noindex, follow, noarchive", `${viewport.width}px ${route}: robots mismatch`);
+    check(result.twitterCard === "summary", `${viewport.width}px ${route}: Twitter card mismatch`);
+    check(!metrics.overflow, `${viewport.width}px ${route}: overflow`);
+    check(metrics.dcl < 2500 && metrics.load < 4000, `${viewport.width}px ${route}: performance dcl=${metrics.dcl} load=${metrics.load}`);
+    check(metrics.resources <= 20 && metrics.transferBytes <= 1_000_000, `${viewport.width}px ${route}: payload resources=${metrics.resources} bytes=${metrics.transferBytes}`);
+    check(axe.violations.length === 0, `${viewport.width}px ${route}: Axe ${axe.violations.map((item) => item.id).join(",")}`);
+  }
+
+  await page.goto(`${base}/`, { waitUntil: "networkidle" });
+  await page.keyboard.press("Tab");
+  const focus = await page.evaluate(() => {
+    const node = document.activeElement;
+    const style = node instanceof HTMLElement ? getComputedStyle(node) : null;
+    return { className: String(node?.className ?? ""), visible: node instanceof HTMLElement && node.getBoundingClientRect().height > 0, outline: style?.outlineStyle ?? "none" };
+  });
+  check(focus.className.includes("skip-link") && focus.visible && focus.outline !== "none", `${viewport.width}px: skip focus not visible`);
+  await page.keyboard.press("Enter");
+  check(new URL(page.url()).hash === "#main-content", `${viewport.width}px: skip link failed`);
+  await page.goto(`${base}/`, { waitUntil: "networkidle" });
+  await page.getByRole("link", { name: "Vorhaben ansehen" }).click();
+  check(new URL(page.url()).hash === "#vorhaben" && await page.locator("#vorhaben").isVisible(), `${viewport.width}px: primary interaction failed`);
+  await page.getByRole("link", { name: "Impressum" }).last().click();
+  await page.waitForURL(/\/impressum$/);
+  check(page.url().endsWith("/impressum"), `${viewport.width}px: legal navigation failed`);
+  check(consoleErrors.length === 0, `${viewport.width}px: console ${consoleErrors.join(" | ")}`);
+  check(requestFailures.length === 0, `${viewport.width}px: requests ${requestFailures.join(" | ")}`);
+  await page.goto(`${base}/`, { waitUntil: "networkidle" });
+  const screenshot = `${output}/seomcp-hardening-${live ? "live" : "local"}-${viewport.width}.png`;
+  await page.screenshot({ path: screenshot, fullPage: true });
+  evidence.viewports[viewport.width] = { routes: routeResults, focus, consoleErrors, consoleWarnings, requestFailures, screenshot };
+  await context.close();
+}
+
+async function request(url) {
+  const response = await fetch(url, { redirect: "manual" });
+  return { url, status: response.status, location: response.headers.get("location"), headers: Object.fromEntries(response.headers.entries()), text: await response.text() };
+}
+
+async function trace(start) {
+  const hops = [];
+  let url = start;
+  for (let count = 0; count < 5; count += 1) {
+    const response = await request(url);
+    hops.push({ url, status: response.status, location: response.location });
+    if (![301, 302, 303, 307, 308].includes(response.status) || !response.location) return { hops, final: url, response };
+    url = new URL(response.location, url).href;
+  }
+  return { hops, final: url, response: null };
+}
+
+if (live) {
+  const apex = await request(`${base}/`);
+  const robots = await request(`${base}/robots.txt`);
+  const sitemap = await request(`${base}/sitemap.xml`);
+  const sitemapIndex = await request(`${base}/sitemap-index.xml`);
+  const missing = await request(`${base}/__hardening_missing__`);
+  const securityTxt = await request(`${base}/.well-known/security.txt`);
+  const starts = [
+    "https://seomcp.de/security/?source=https-apex",
+    "https://www.seomcp.de/security/?source=https-www",
+    "http://seomcp.de/security/?source=http-apex",
+    "http://www.seomcp.de/security/?source=http-www",
+  ];
+  const traces = await Promise.all(starts.map(trace));
+  const expected = starts.map((start) => { const url = new URL(start); return `https://seomcp.de${url.pathname.replace(/\/$/, "")}${url.search}`; });
+  const expectedHeaders = {
+    "content-security-policy": "default-src 'self'; base-uri 'self'; connect-src 'self'; font-src 'self'; form-action 'none'; frame-ancestors 'none'; img-src 'self' data:; manifest-src 'self'; media-src 'self'; object-src 'none'; script-src 'none'; style-src 'self' 'unsafe-inline'; upgrade-insecure-requests",
+    "x-content-type-options": "nosniff",
+    "referrer-policy": "strict-origin-when-cross-origin",
+    "permissions-policy": "accelerometer=(), autoplay=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()",
+    "x-frame-options": "DENY",
+    "x-robots-tag": "noindex, follow, noarchive",
+  };
+  check(apex.status === 200, `apex status ${apex.status}`);
+  for (const [name, value] of Object.entries(expectedHeaders)) check(apex.headers[name] === value, `header ${name} mismatch`);
+  check(robots.status === 200 && robots.text.includes("Allow: /") && !robots.text.includes("Disallow: /") && !robots.text.includes("Sitemap:"), "robots contract failed");
+  check(sitemap.status === 404 && sitemapIndex.status === 404, "sitemap must remain 404");
+  check(missing.status === 404, `missing route ${missing.status}`);
+  check(securityTxt.status === 200 && securityTxt.text.includes("Preferred-Languages: de, en"), "security.txt failed");
+  traces.forEach((item, index) => {
+    check(item.final === expected[index], `redirect final ${item.final}`);
+    check(item.hops.length <= 4 && item.hops.slice(0, -1).every((hop) => hop.status === 308), `redirect trace ${JSON.stringify(item.hops)}`);
+    check(item.response?.status === 200, `redirect final status ${item.response?.status}`);
+  });
+  evidence.http = { apex: { status: apex.status, headers: apex.headers }, robots: robots.status, sitemap: sitemap.status, sitemapIndex: sitemapIndex.status, missing: missing.status, securityTxt: securityTxt.status, traces };
+}
+
+await browser.close();
+await fs.writeFile(`${output}/seomcp-hardening-${live ? "live" : "local"}-evidence.json`, JSON.stringify(evidence, null, 2));
+console.log(JSON.stringify({ ok: failures.length === 0, failures, evidence }, null, 2));
+process.exitCode = failures.length ? 1 : 0;
