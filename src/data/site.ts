@@ -19,8 +19,8 @@ export const site = {
     phoneHref: "+4917642449858",
   },
   links: {
-    contextter: "https://contextter.com/",
-    contextterSiteAudit: "https://contextter.com/site-audit/",
+    contextter: "https://crawlfoundry.com/",
+    contextterSiteAudit: "https://crawlfoundry.com/features/site-audit",
     editorial: "https://seo-mcp.de/",
     github: "https://github.com/lia-xim/seomcp.de",
     securityAdvisory: "https://github.com/lia-xim/seomcp.de/security/advisories/new",
