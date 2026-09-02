@@ -44,9 +44,9 @@ export const launchPolicy: LaunchPolicy = {
 export const seoRoutes = {
   home: {
     path: "/",
-    title: "Contextter MCP: technischer Pre-Launch-Status",
+    title: "Crawl Foundry MCP: technischer Status",
     description:
-      "Offizieller technischer Projektstatus für den geplanten Contextter MCP-Zugang. Aktuell gibt es keinen öffentlichen Endpoint und keine Servicegarantie.",
+      "Offizieller technischer Projektstatus für den Crawl Foundry MCP-Zugang. Öffentliche Verfügbarkeit und Servicegarantie werden getrennt belegt.",
     role: "service_launch",
     sitemap: "launch",
   },
@@ -54,7 +54,7 @@ export const seoRoutes = {
     path: "/security",
     title: "Sicherheit und Meldung für das MCP-Vorhaben",
     description:
-      "Aktueller Sicherheitsumfang, private Meldestelle und verbindliche Freigabegates für das noch nicht gestartete Contextter MCP-Vorhaben.",
+      "Aktueller Sicherheitsumfang, private Meldestelle und verbindliche Freigabegates für das Crawl Foundry MCP-Vorhaben.",
     role: "security_utility",
     sitemap: "never",
   },
@@ -62,7 +62,7 @@ export const seoRoutes = {
     path: "/service-contract",
     title: "Prelaunch-Vertrag für Endpoint und Protokoll",
     description:
-      "Prüfvertrag für einen künftigen Contextter-MCP-Endpunkt. Derzeit ist kein öffentlicher Endpoint oder Protokollnachweis freigegeben.",
+      "Prüfvertrag für den Crawl-Foundry-MCP-Endpunkt. Ein öffentlicher Protokollnachweis wird separat freigegeben.",
     role: "prelaunch_contract",
     sitemap: "never",
   },
@@ -84,7 +84,7 @@ export const seoRoutes = {
   },
   status: {
     path: "/status",
-    title: "Prelaunch-Status des Contextter-MCP-Vorhabens",
+    title: "Status des Crawl-Foundry-MCP-Vorhabens",
     description:
       "Aktueller Beweisstand der Launch-Gates. Diese Seite ist kein Uptime-Monitor und behauptet keine Serviceverfügbarkeit.",
     role: "prelaunch_status",

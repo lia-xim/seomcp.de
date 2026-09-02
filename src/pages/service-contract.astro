@@ -14,7 +14,7 @@ import { evidenceState, missingServiceEvidence } from "../data/service-evidence"
           <div><p class="eyebrow">Service-Vertrag · {evidenceState}</p><h1>Noch kein Endpoint. Erst ein Prüfvertrag.</h1></div>
           <p>Diese Seite veröffentlicht weder eine Verbindungs-URL noch eine MCP-Version. Sie hält fest, welche technische Evidenz vor einer solchen Veröffentlichung reproduzierbar vorliegen muss.</p>
         </header>
-        <div class="contract-state" role="status"><strong>{evidenceState}</strong><p>Es gibt derzeit keinen freigegebenen öffentlichen Contextter-MCP-Endpunkt und keinen extern bestätigten Protokolltest.</p></div>
+        <div class="contract-state" role="status"><strong>{evidenceState}</strong><p>Es gibt derzeit keinen freigegebenen öffentlichen Crawl-Foundry-MCP-Endpunkt und keinen extern bestätigten Protokolltest.</p></div>
         <div class="content-blocks">
           <section class="content-block"><span>01</span><h2>Vor Veröffentlichung</h2><ul>{missingServiceEvidence.endpoint.map((item) => <li>{item}</li>)}</ul></section>
           <section class="content-block"><span>02</span><h2>Der spätere Nachweis</h2><p>Ein Launchbeleg muss Produktions-URL, beobachtete Antworten, Prüfzeitpunkt, eingesetzten Client, negative Fälle und verantwortlichen Owner zusammenführen. Ein Screenshot oder eine geplante URL reicht nicht.</p></section>

@@ -5,7 +5,7 @@ export const serviceContracts = [
     path: "/service-contract",
     label: "Service-Vertrag",
     title: "Endpoint und Protokollidentität",
-    summary: "Definiert die Nachweise, die vor der Veröffentlichung eines Contextter-MCP-Endpunkts vorliegen müssen.",
+    summary: "Definiert die Nachweise, die für den öffentlichen Crawl-Foundry-MCP-Endpunkt vorliegen müssen.",
   },
   {
     path: "/capabilities",

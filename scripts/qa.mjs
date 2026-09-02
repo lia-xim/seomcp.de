@@ -82,7 +82,7 @@ check(notFound.includes("Unbekannte URLs werden nicht pauschal"), "404: no blank
 for (const [key, page] of Object.entries({ serviceContract, capabilities, authorization, status })) {
   check(page.includes("NOT PROVEN"), `${key}: unverified state must be visible`);
 }
-check(serviceContract.includes("keinen freigegebenen öffentlichen Contextter-MCP-Endpunkt"), "service contract: endpoint boundary required");
+check(serviceContract.includes("keinen freigegebenen öffentlichen Crawl-Foundry-MCP-Endpunkt"), "service contract: endpoint boundary required");
 check(capabilities.includes("keine veröffentlichte Liste"), "capabilities: absence must be explicit");
 check(authorization.includes("kein öffentlicher Auth-Flow"), "authorization: absence must be explicit");
 check(status.includes("kein Uptime-Monitor") && status.includes("keine SLA"), "status: operational-claim boundary required");

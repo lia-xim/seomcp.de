@@ -7,7 +7,7 @@ export const site = {
   description: seoRoutes.home.description,
   canonicalUrl: SITE_ORIGIN,
   purpose:
-    "seomcp.de wird die technische Verbindung zwischen unterstützten MCP-Clients und Contextter. Noch ist kein öffentlicher Endpoint freigegeben.",
+    "seomcp.de wird die technische Verbindung zwischen unterstützten MCP-Clients und Crawl Foundry. Noch ist kein öffentlicher Endpoint freigegeben.",
   status: "Reservierte Infrastruktur. Kein öffentlicher MCP-Endpunkt ist freigegeben.",
   boundary:
     "Keine Endpoint-, Uptime-, Auth- oder Capability-Behauptung ohne tatsächlich bereitgestellten und geprüften Dienst. Redaktionelle Inhalte gehören auf seo-mcp.de.",

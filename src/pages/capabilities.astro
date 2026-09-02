@@ -14,7 +14,7 @@ import { evidenceState, missingServiceEvidence } from "../data/service-evidence"
           <div><p class="eyebrow">Capability-Vertrag · {evidenceState}</p><h1>Keine Capability ohne Laufzeitbeleg.</h1></div>
           <p>Hier steht nur der Publikationsvertrag. Es gibt aktuell keine veröffentlichte Liste von Tools, Ressourcen oder anderen MCP-Capabilities.</p>
         </header>
-        <div class="contract-state" role="status"><strong>{evidenceState}</strong><p>Kein versioniertes Capability-Schema ist mit einer deployten Contextter-MCP-Laufzeit abgeglichen.</p></div>
+        <div class="contract-state" role="status"><strong>{evidenceState}</strong><p>Kein versioniertes Capability-Schema ist mit einer deployten Crawl-Foundry-MCP-Laufzeit abgeglichen.</p></div>
         <div class="content-blocks">
           <section class="content-block"><span>01</span><h2>Pflichtfelder</h2><ul>{missingServiceEvidence.capabilities.map((item) => <li>{item}</li>)}</ul></section>
           <section class="content-block"><span>02</span><h2>Pro Capability</h2><p>Name und Version, Eingabe und Ausgabe, Datenquelle, erforderliche Scopes, Mandantenbezug, Kosten, Nebenwirkungen, Limits, Timeouts und Fehlerfälle müssen sichtbar und maschinenlesbar zur Laufzeit passen.</p></section>
