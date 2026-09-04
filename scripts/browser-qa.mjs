@@ -98,8 +98,10 @@ for (const viewport of [{ width: 1440, height: 1000 }, { width: 390, height: 844
   await page.keyboard.press("Enter");
   check(new URL(page.url()).hash === "#main-content", `${viewport.width}px: skip link failed`);
   await page.goto(`${base}/`, { waitUntil: "networkidle" });
-  await page.getByRole("link", { name: "Dokumentation" }).click();
-  check(new URL(page.url()).hash === "#nachweise" && await page.locator("#nachweise").isVisible(), `${viewport.width}px: primary interaction failed`);
+  await page.getByRole("link", { name: "Launch-Status", exact: true }).click();
+  await page.waitForURL(/\/status$/);
+  check(await page.locator(".readiness-ledger").isVisible(), `${viewport.width}px: primary interaction failed`);
+  await page.goto(`${base}/`, { waitUntil: "networkidle" });
   await page.getByRole("link", { name: "Impressum" }).last().click();
   await page.waitForURL(/\/impressum$/);
   check(page.url().endsWith("/impressum"), `${viewport.width}px: legal navigation failed`);

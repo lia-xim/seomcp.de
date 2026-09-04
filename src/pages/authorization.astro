@@ -11,15 +11,14 @@ import { evidenceState, missingServiceEvidence } from "../data/service-evidence"
     <SiteHeader />
     <main id="main-content" class="content-page">
       <div class="content-shell contract-shell">
-        <header class="content-hero contract-hero">
-          <div><p class="eyebrow">Auth-Vertrag · {evidenceState}</p><h1>Kein Login ist noch kein Sicherheitsmodell.</h1></div>
-          <p>Aktuell existiert kein öffentlicher Auth-Flow auf seomcp.de. Diese Seite definiert die Nachweise, die vor einer Verbindung von Identität, Mandant, Daten und kostenrelevanten Aktionen erforderlich sind.</p>
+        <header class="content-hero">
+          <h1>Autorisierung</h1>
+          <p>Aktuell existiert kein öffentlicher Auth-Flow auf seomcp.de.</p>
+          <p class="page-meta">{evidenceState}</p>
         </header>
-        <div class="contract-state" role="status"><strong>{evidenceState}</strong><p>Issuer, Resource Server, Client-Flow, Scopes, Token-Lebenszyklus und Mandantenbindung sind nicht produktiv belegt.</p></div>
         <div class="content-blocks">
-          <section class="content-block"><span>01</span><h2>Vor Freigabe</h2><ul>{missingServiceEvidence.authorization.map((item) => <li>{item}</li>)}</ul></section>
-          <section class="content-block"><span>02</span><h2>Ablehnung gehört zum Test</h2><p>Fehlende, falsche oder tenantfremde Identitäten müssen reproduzierbar scheitern. Widerrufene Tokens, zu breite Scopes und nicht freigegebene kostenpflichtige oder verändernde Aktionen brauchen eigene Negativtests.</p></section>
-          <section class="content-block"><span>03</span><h2>Security-Grenze</h2><p>Secrets, Tokens, Workspace-IDs und private Logs gehören nicht auf diese öffentliche Fläche. Der aktuelle Meldeweg und statische Umfang stehen unter <a href="/security">Sicherheit</a>.</p></section>
+          <section class="content-block"><h2>Vor Veröffentlichung erforderlich</h2><ul>{missingServiceEvidence.authorization.map((item) => <li>{item}</li>)}</ul></section>
+          <p class="launch-note">Unzulässige, widerrufene oder tenantfremde Zugriffe müssen reproduzierbar scheitern.</p>
         </div>
         <TechnicalNav />
       </div>

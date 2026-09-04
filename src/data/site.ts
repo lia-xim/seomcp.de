@@ -30,7 +30,6 @@ export const site = {
   navigation: [
     { label: "Status", href: "/status" },
     { label: "Sicherheit", href: "/security" },
-    { label: "Dokumentation", href: "/#nachweise" },
   ],
   plannedSurfaces: [
     {

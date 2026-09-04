@@ -3,10 +3,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import { site } from "../data/site";
-import { launchPolicy } from "../data/seo";
-
-const gates = Object.values(launchPolicy.readiness);
-const verifiedGates = gates.filter((gate) => gate.verified && gate.evidence).length;
 ---
 
 <BaseLayout routeKey="home">
@@ -15,82 +11,28 @@ const verifiedGates = gates.filter((gate) => gate.verified && gate.evidence).len
 
     <main id="main-content">
       <section class="hero" aria-labelledby="hero-heading">
-        <div class="hero-copy">
-          <h1 id="hero-heading">Der geplante MCP-Zugang zu Crawl Foundry.</h1>
-          <p>{site.purpose}</p>
-          <div class="hero-actions">
-            <a class="button button-primary" href="/status">Launch-Status prüfen</a>
-            <a class="text-action" href={site.links.editorial} rel="external noopener noreferrer">
-              MCP-Wissen auf seo-mcp.de
-              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5" /></svg>
-            </a>
-          </div>
+        <h1 id="hero-heading">MCP-Zugang zu Crawl Foundry.</h1>
+        <p>Der öffentliche Dienst ist noch nicht gestartet. Bis dahin dokumentiert diese Seite nur die Voraussetzungen für einen sicheren Betrieb.</p>
+        <div class="hero-actions">
+          <a class="button" href="/status">Launch-Status</a>
+          <a class="text-action" href="/security">Sicherheit</a>
         </div>
-
-        <aside class="status-card" aria-labelledby="service-status-heading">
-          <div class="status-card-heading">
-            <p>Dienststatus</p>
-            <span><i aria-hidden="true"></i>Nicht gestartet</span>
-          </div>
-          <h2 id="service-status-heading">Nicht gestartet</h2>
-          <dl>
-            <div><dt>Verifizierte Gates</dt><dd>{verifiedGates} von {gates.length}</dd></div>
-            <div><dt>Öffentlicher Endpoint</dt><dd>Nicht veröffentlicht</dd></div>
-            <div><dt>Website geprüft</dt><dd>{site.verifiedAt}</dd></div>
-          </dl>
-          <ol class="gate-rail" aria-label={`${verifiedGates} von ${gates.length} Launch-Gates verifiziert`}>
-            {site.plannedSurfaces.map((surface) => <li><span aria-hidden="true"></span><small>{surface.number}</small></li>)}
-          </ol>
-        </aside>
       </section>
 
       <section class="proof-section" id="nachweise" aria-labelledby="proof-heading">
-        <header class="section-heading">
-          <p>Launch-Gates</p>
-          <h2 id="proof-heading">Was vor dem Start belegt sein muss</h2>
-          <span>Vier technische Verträge. Noch keiner ist erfüllt.</span>
-        </header>
+        <h2 id="proof-heading">Vor dem Start erforderlich</h2>
         <div class="service-ledger">
           {site.plannedSurfaces.map((surface) => (
             <a class="service-row" href={surface.href}>
-              <span class="service-number">{surface.number}</span>
-              <div>
-                <strong>{surface.host}</strong>
-                <p>{surface.description}</p>
-              </div>
-              <small><i aria-hidden="true"></i>{surface.state}</small>
-              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7" /></svg>
+              <strong>{surface.host}</strong>
+              <span>{surface.state}</span>
             </a>
           ))}
         </div>
       </section>
 
-      <section class="truth-grid" aria-label="Vorhandene Projektfläche und Domainabgrenzung">
-        <article>
-          <p class="section-label">Heute bereits vorhanden</p>
-          <h2>Die überprüfbare Grundlage.</h2>
-          <ul class="available-list">
-            <li><span aria-hidden="true">✓</span>Statische Statusfläche</li>
-            <li><span aria-hidden="true">✓</span>Security-Kontakt und security.txt</li>
-            <li><span aria-hidden="true">✓</span>Impressum und Datenschutz</li>
-            <li><span aria-hidden="true">✓</span>Öffentliches Quellcode-Repository</li>
-          </ul>
-          <a class="text-action" href={site.links.github} rel="external noopener noreferrer">Quellcode prüfen<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5" /></svg></a>
-        </article>
-
-        <article>
-          <p class="section-label">Klare Aufgabenteilung</p>
-          <h2>Betrieb hier. Wissen auf seo-mcp.de.</h2>
-          <p>seomcp.de dokumentiert den technischen Status und später den sicheren Zugang zu Crawl Foundry. Hintergründe, Spezifikationen und redaktionelle Vergleiche liegen auf seo-mcp.de.</p>
-          <p class="ownership-note">Gemeinsamer Betreiber. Keine unabhängige Empfehlung.</p>
-          <a class="text-action" href={site.links.editorial} rel="external noopener noreferrer">Zur Wissensplattform<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5" /></svg></a>
-        </article>
-      </section>
-
-      <section class="product-strip" aria-labelledby="product-context-heading">
-        <div><p class="section-label">Produktkontext</p><h2 id="product-context-heading">Der geplante Zugang gehört zu Crawl Foundry.</h2></div>
-        <p>Crawl Foundry ist die zugehörige SEO-Arbeitsplattform. seomcp.de bleibt ihre getrennte technische MCP-Fläche.</p>
-        <a href={site.links.contextter} rel="external noopener noreferrer">Crawl Foundry ansehen<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5" /></svg></a>
+      <section class="context-line" aria-label="Produktkontext">
+        <p>Technischer Zugang für <a href={site.links.contextter} rel="external noopener noreferrer">Crawl Foundry</a>. MCP-Wissen auf <a href={site.links.editorial} rel="external noopener noreferrer">seo-mcp.de</a>. Gemeinsamer Betreiber. Keine unabhängige Empfehlung.</p>
       </section>
     </main>
 

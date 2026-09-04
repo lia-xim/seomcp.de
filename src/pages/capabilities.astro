@@ -11,15 +11,14 @@ import { evidenceState, missingServiceEvidence } from "../data/service-evidence"
     <SiteHeader />
     <main id="main-content" class="content-page">
       <div class="content-shell contract-shell">
-        <header class="content-hero contract-hero">
-          <div><p class="eyebrow">Capability-Vertrag · {evidenceState}</p><h1>Keine Capability ohne Laufzeitbeleg.</h1></div>
-          <p>Hier steht nur der Publikationsvertrag. Es gibt aktuell keine veröffentlichte Liste von Tools, Ressourcen oder anderen MCP-Capabilities.</p>
+        <header class="content-hero">
+          <h1>Capabilities</h1>
+          <p>Es gibt aktuell keine veröffentlichte Liste von Tools, Ressourcen oder anderen MCP-Capabilities.</p>
+          <p class="page-meta">{evidenceState}</p>
         </header>
-        <div class="contract-state" role="status"><strong>{evidenceState}</strong><p>Kein versioniertes Capability-Schema ist mit einer deployten Crawl-Foundry-MCP-Laufzeit abgeglichen.</p></div>
         <div class="content-blocks">
-          <section class="content-block"><span>01</span><h2>Pflichtfelder</h2><ul>{missingServiceEvidence.capabilities.map((item) => <li>{item}</li>)}</ul></section>
-          <section class="content-block"><span>02</span><h2>Pro Capability</h2><p>Name und Version, Eingabe und Ausgabe, Datenquelle, erforderliche Scopes, Mandantenbezug, Kosten, Nebenwirkungen, Limits, Timeouts und Fehlerfälle müssen sichtbar und maschinenlesbar zur Laufzeit passen.</p></section>
-          <section class="content-block"><span>03</span><h2>Freigaberegel</h2><p>Eine Capability gilt nicht als vorhanden, weil sie geplant, dokumentiert oder in einem Mock sichtbar ist. Positiv-, Negativ- und Grenztests müssen gegen die tatsächlich deployte Version laufen.</p></section>
+          <section class="content-block"><h2>Vor Veröffentlichung erforderlich</h2><ul>{missingServiceEvidence.capabilities.map((item) => <li>{item}</li>)}</ul></section>
+          <p class="launch-note">Dokumentiert wird nur, was mit der tatsächlich deployten Laufzeit getestet wurde.</p>
         </div>
         <TechnicalNav />
       </div>
