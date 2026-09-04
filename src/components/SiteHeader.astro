@@ -1,15 +1,20 @@
 ---
 import { site } from "../data/site";
+
+const currentPath = Astro.url.pathname;
 ---
 
 <header class="site-header">
   <a class="brand" href="/" aria-label="seomcp.de Startseite">
-    <span>{site.domain}</span>
+    <svg class="brand-mark" aria-hidden="true" viewBox="0 0 40 40">
+      <path d="M28.5 5.5H14.25L5.5 14.25v17.5l8.75 8.75H28.5l6-6V25H22v6h6.5v1.5H16.75L12 27.75v-9.5l4.75-4.75H28.5l6-6V-.5Z" />
+    </svg>
+    <span class="brand-copy"><strong>{site.domain}</strong><small>Crawl Foundry MCP</small></span>
   </a>
   <nav aria-label="Hauptnavigation">
     <ul>
       {site.navigation.map((item) => (
-        <li><a href={item.href}>{item.label}</a></li>
+        <li><a href={item.href} aria-current={item.href === currentPath ? "page" : undefined}>{item.label}</a></li>
       ))}
     </ul>
   </nav>

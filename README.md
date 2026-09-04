@@ -55,7 +55,7 @@ that a service exists:
 - `/status` — launch-evidence status, explicitly not an uptime monitor or SLA
 
 All four routes remain `noindex, follow, noarchive`, are permanently excluded from the generated
-sitemap, and expose every current service state as `NOT PROVEN`.
+sitemap, and expose every current service state visibly as `Nicht belegt`.
 
 Vercel normalizes non-root trailing-slash variants to the extensionless canonical path with a permanent
 redirect. The shared response-header contract adds CSP, `nosniff`, referrer, permissions and framing
@@ -64,5 +64,4 @@ policies on every route; the build fails if `vercel.json` drifts from that contr
 ## Rights
 
 The domain is an owner-confirmed new registration, not an expired domain. There is no legacy site, former operator, archive identity, or historical brand to continue. Normal third-party rights still apply: this public repository grants no license to reuse external content, brands, media, datasets, or code. No open-source license is granted unless a later commit adds one explicitly.
-
 

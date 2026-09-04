@@ -1,4 +1,4 @@
-export const evidenceState = "NOT PROVEN" as const;
+export const evidenceState = "Nicht belegt" as const;
 
 export const serviceContracts = [
   {

@@ -21,22 +21,22 @@ export const launchPolicy: LaunchPolicy = {
     publicReadOnlyService: {
       verified: false,
       evidence: null,
-      requirement: "A real, read-only public MCP service is deployed and externally testable.",
+      requirement: "Ein echter, lesender MCP-Dienst ist produktiv bereitgestellt und extern prüfbar.",
     },
     authTenancyAndCostContracts: {
       verified: false,
       evidence: null,
-      requirement: "Auth, tenancy, scope and cost behavior are documented and verified.",
+      requirement: "Auth, Mandantenbindung, Scopes und Kostenverhalten sind dokumentiert und geprüft.",
     },
     namedServiceAndSecurityOwners: {
       verified: false,
       evidence: null,
-      requirement: "Named service and security owners have accepted operational responsibility.",
+      requirement: "Benannte Service- und Security-Verantwortliche haben den Betrieb übernommen.",
     },
     externalStatusAndIncidentProcess: {
       verified: false,
       evidence: null,
-      requirement: "External status checks and an incident communication process are operating.",
+      requirement: "Externe Statuschecks und ein Incident-Kommunikationsprozess sind in Betrieb.",
     },
   },
 };
@@ -44,9 +44,9 @@ export const launchPolicy: LaunchPolicy = {
 export const seoRoutes = {
   home: {
     path: "/",
-    title: "Crawl Foundry MCP: technischer Status",
+    title: "MCP-Zugang für Crawl Foundry: Launch-Status",
     description:
-      "Offizieller technischer Projektstatus für den Crawl Foundry MCP-Zugang. Öffentliche Verfügbarkeit und Servicegarantie werden getrennt belegt.",
+      "Technischer Prelaunch-Status des geplanten Crawl-Foundry-MCP-Zugangs: Endpoint, Capabilities, Autorisierung und Betrieb werden vor dem Start belegt.",
     role: "service_launch",
     sitemap: "launch",
   },

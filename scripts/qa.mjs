@@ -71,16 +71,16 @@ const status = pages.status;
 const imprint = pages.imprint;
 const privacy = pages.privacy;
 const notFound = pages.notFound;
-check(index.includes("Noch ist kein öffentlicher Endpoint freigegeben."), "home: pre-launch boundary must be explicit");
+check(index.includes("Der öffentliche Dienst ist noch nicht gestartet."), "home: pre-launch boundary must be explicit");
 check(index.includes("Gemeinsamer Betreiber. Keine unabhängige Empfehlung."), "home: shared ownership must be explicit");
-check(index.includes("PRE-LAUNCH / NOINDEX"), "home: visible pre-launch state must remain present");
+check(index.includes("PRELAUNCH · NOINDEX"), "home: visible pre-launch state must remain present");
 check(!/(?:mcp|connect|status)\.seomcp\.de/.test(index), "home: must not publish speculative subdomains");
 check(security.includes("privaten Security-Advisory-Kanal"), "security: private reporting path required");
 check(security.includes('href="mailto:info@matthiasramahi.de"'), "security: direct email reporting path required");
 check(security.includes('href="/.well-known/security.txt"'), "security: visible security.txt discovery link required");
 check(notFound.includes("Unbekannte URLs werden nicht pauschal"), "404: no blanket redirect rule required");
 for (const [key, page] of Object.entries({ serviceContract, capabilities, authorization, status })) {
-  check(page.includes("NOT PROVEN"), `${key}: unverified state must be visible`);
+  check(page.includes("Nicht belegt"), `${key}: unverified state must be visible`);
 }
 check(serviceContract.includes("keinen freigegebenen öffentlichen Crawl-Foundry-MCP-Endpunkt"), "service contract: endpoint boundary required");
 check(capabilities.includes("keine veröffentlichte Liste"), "capabilities: absence must be explicit");
