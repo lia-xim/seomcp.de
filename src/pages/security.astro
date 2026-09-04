@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
+import TechnicalNav from "../components/TechnicalNav.astro";
 import { site } from "../data/site";
 ---
 
@@ -9,57 +10,59 @@ import { site } from "../data/site";
   <div class="page-frame">
     <SiteHeader />
     <main id="main-content" class="content-page">
-      <div class="content-shell">
-        <header class="content-hero">
-          <h1>Sicherheit beginnt vor dem Endpoint.</h1>
-          <p>
-            seomcp.de stellt derzeit keinen öffentlichen MCP-Endpunkt, keine Autorisierung und keine
-            produktive Capability bereit. Bevor sich das ändert, müssen Mandantentrennung,
-            Berechtigungen, Kostenkontrolle, Audit und Incident-Prozess nachweisbar funktionieren.
-          </p>
+      <div class="content-shell security-shell">
+        <header class="content-hero security-hero">
+          <div><p class="eyebrow">Sicherheitsumfang</p><h1>Sicherheit beginnt vor dem Endpoint.</h1></div>
+          <p>seomcp.de stellt derzeit keinen öffentlichen MCP-Endpunkt, keine Autorisierung und keine produktive Capability bereit. Diese Seite beschreibt die heutige statische Fläche und den privaten Meldeweg.</p>
         </header>
 
-        <div class="content-blocks">
-          <section class="content-block" aria-labelledby="report-heading">
-            <span aria-hidden="true">01</span>
-            <h2 id="report-heading">Hinweis melden</h2>
-            <p>
-              Vermutete Schwachstellen, offengelegte Zugangsdaten oder private Informationen bitte
-              nicht als öffentliches Issue posten. Sende den Hinweis direkt an{" "}
-              <a href={`mailto:${site.operator.email}`}>{site.operator.email}</a> oder nutze nach
-              einer GitHub-Anmeldung den{" "}
-              <a href={site.links.securityAdvisory} rel="external noopener noreferrer">privaten Security-Advisory-Kanal</a>.
-              Die maschinenlesbaren Kontaktangaben stehen zusätzlich unter{" "}
-              <a href="/.well-known/security.txt">/.well-known/security.txt</a>.
-            </p>
-          </section>
+        <dl class="scope-facts" aria-label="Aktueller technischer Umfang">
+          <div><dt>Fläche</dt><dd>Statische Projektseite</dd></div>
+          <div><dt>Nutzerdaten</dt><dd>Keine Konten oder Uploads</dd></div>
+          <div><dt>MCP-Dienst</dt><dd>Nicht veröffentlicht</dd></div>
+        </dl>
 
-          <section class="content-block" aria-labelledby="current-heading">
-            <span aria-hidden="true">02</span>
-            <h2 id="current-heading">Aktueller Umfang</h2>
-            <ul>
-              <li>Statische, absichtlich nicht indexierbare Projektseite.</li>
-              <li>Kein Login, keine Uploads, keine Nutzer- oder Workspace-Daten.</li>
-              <li>Keine öffentliche MCP-Verbindung und keine versprochene Verfügbarkeit.</li>
-            </ul>
-          </section>
+        <div class="security-layout">
+          <nav class="page-toc" aria-label="Inhalt dieser Seite">
+            <p>Inhalt</p>
+            <a href="#meldung"><span>01</span>Hinweis melden</a>
+            <a href="#umfang"><span>02</span>Aktueller Umfang</a>
+            <a href="#freigabe"><span>03</span>Vor einer Freigabe</a>
+          </nav>
 
-          <section class="content-block" aria-labelledby="launch-heading">
-            <span aria-hidden="true">03</span>
-            <h2 id="launch-heading">Vor einer Freigabe</h2>
-            <ul>
-              <li>Scopes müssen Benutzer, Organisation, Workspace und Ressource korrekt binden.</li>
-              <li>Kostenpflichtige und destruktive Aktionen brauchen Limits, Vorschau und explizite Freigaben.</li>
-              <li>Status und Incident-Kommunikation müssen extern prüfbar sein.</li>
-              <li>Discovery- und Sicherheitsmetadaten müssen der tatsächlich deployten Version entsprechen.</li>
-            </ul>
-          </section>
+          <div class="security-content">
+            <section id="meldung" aria-labelledby="report-heading">
+              <span>01</span>
+              <div>
+                <h2 id="report-heading">Hinweis melden</h2>
+                <p>Vermutete Schwachstellen, offengelegte Zugangsdaten oder private Informationen bitte nicht als öffentliches Issue posten. Nutze für vertrauliche Hinweise einen der beiden privaten Wege.</p>
+                <div class="report-panel">
+                  <a href={`mailto:${site.operator.email}`}><small>Direkte E-Mail</small><strong>{site.operator.email}</strong></a>
+                  <a href={site.links.securityAdvisory} rel="external noopener noreferrer"><small>GitHub-Anmeldung erforderlich</small><strong>Zum privaten Security-Advisory-Kanal</strong></a>
+                </div>
+                <p class="security-txt-link">Maschinenlesbare Kontaktangaben: <a href="/.well-known/security.txt">/.well-known/security.txt</a></p>
+              </div>
+            </section>
+
+            <section id="umfang" aria-labelledby="current-heading">
+              <span>02</span>
+              <div>
+                <h2 id="current-heading">Aktueller Umfang</h2>
+                <ul><li>Statische, absichtlich nicht indexierbare Projektseite.</li><li>Kein Login, keine Uploads, keine Nutzer- oder Workspace-Daten.</li><li>Keine öffentliche MCP-Verbindung und keine versprochene Verfügbarkeit.</li></ul>
+              </div>
+            </section>
+
+            <section id="freigabe" aria-labelledby="launch-heading">
+              <span>03</span>
+              <div>
+                <h2 id="launch-heading">Vor einer Freigabe</h2>
+                <ul><li>Scopes müssen Benutzer, Organisation, Workspace und Ressource korrekt binden.</li><li>Kostenpflichtige und destruktive Aktionen brauchen Limits, Vorschau und explizite Freigaben.</li><li>Status und Incident-Kommunikation müssen extern prüfbar sein.</li><li>Discovery- und Sicherheitsmetadaten müssen der tatsächlich deployten Version entsprechen.</li></ul>
+              </div>
+            </section>
+          </div>
         </div>
 
-        <a class="text-action content-back" href="/">
-          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M19 12H5m5-5-5 5 5 5" /></svg>
-          Zurück zur Projektseite
-        </a>
+        <TechnicalNav />
       </div>
     </main>
     <SiteFooter />

@@ -5,6 +5,8 @@ export const NOINDEX_DIRECTIVE = "noindex, follow, noarchive";
 interface LaunchGate {
   verified: boolean;
   evidence: string | null;
+  label: string;
+  href: string;
   requirement: string;
 }
 
@@ -21,21 +23,29 @@ export const launchPolicy: LaunchPolicy = {
     publicReadOnlyService: {
       verified: false,
       evidence: null,
+      label: "Endpoint & Protokoll",
+      href: "/service-contract",
       requirement: "Ein echter, lesender MCP-Dienst ist produktiv bereitgestellt und extern prüfbar.",
     },
     authTenancyAndCostContracts: {
       verified: false,
       evidence: null,
+      label: "Auth, Mandanten & Kosten",
+      href: "/authorization",
       requirement: "Auth, Mandantenbindung, Scopes und Kostenverhalten sind dokumentiert und geprüft.",
     },
     namedServiceAndSecurityOwners: {
       verified: false,
       evidence: null,
+      label: "Service- & Security-Verantwortung",
+      href: "/security",
       requirement: "Benannte Service- und Security-Verantwortliche haben den Betrieb übernommen.",
     },
     externalStatusAndIncidentProcess: {
       verified: false,
       evidence: null,
+      label: "Status & Incident-Prozess",
+      href: "/status#betriebsnachweise",
       requirement: "Externe Statuschecks und ein Incident-Kommunikationsprozess sind in Betrieb.",
     },
   },

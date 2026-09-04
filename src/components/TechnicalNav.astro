@@ -1,0 +1,23 @@
+---
+const items = [
+  { number: "01", label: "Service-Vertrag", href: "/service-contract" },
+  { number: "02", label: "Capabilities", href: "/capabilities" },
+  { number: "03", label: "Autorisierung", href: "/authorization" },
+  { number: "04", label: "Launch-Status", href: "/status" },
+] as const;
+
+const currentPath = Astro.url.pathname;
+---
+
+<nav class="technical-nav" aria-label="Technische Dokumentation">
+  <p>Technische Dokumentation</p>
+  <div>
+    {items.map((item) => (
+      <a href={item.href} aria-current={currentPath === item.href ? "page" : undefined}>
+        <span>{item.number}</span>
+        <strong>{item.label}</strong>
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7" /></svg>
+      </a>
+    ))}
+  </div>
+</nav>
